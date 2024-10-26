@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/admin")
-@Tag(name = "Admin API", description = "Admin 관련 API")
 public class AdminController {
     private final AdminService adminService;
 
@@ -28,7 +27,6 @@ public class AdminController {
      * @param signupDTO p1
      * @return ResponseResult<?>
      */
-    @Operation(summary = "유저 생성")
     @PostMapping("/signup")
     public ResponseResult<?> signup(@Valid @RequestBody SignupDTO.Request signupDTO) {
         adminService.signup(signupDTO);
@@ -42,7 +40,6 @@ public class AdminController {
      * @param resetPasswordDTO p1
      * @return ResponseResult<?>
      */
-    @Operation(summary = "비밀번호 초기화")
     @PostMapping("/reset-password")
     public ResponseResult<?> resetPassword(@Valid @RequestBody ResetPasswordDTO.Request resetPasswordDTO) {
         return ResponseResult.ofSuccess("success", null);

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--suppress SqlNoDataSourceInspection -->
+<!-- 오더 관련 Mapper -->
+<mapper namespace="com.example.bot.biz.mapper.OrderMapper">
+    <!-- 오더 리스트 조회 -->
+    <select id="getOrderList" parameterType="com.example.bot.biz.dto.Order.OrderListDTO$Request" resultType="com.example.bot.biz.dto.Order.OrderListDTO$Response">
+        SELECT *
+        FROM M_ORDER MO
+                 INNER JOIN M_USER MU
+                            ON MO.USERCD = MU.USERCD
+                 INNER JOIN M_BUYER MB
+                            ON MO.BUYERCD = MB.BUYERCD
+        WHERE MO.USERCD = ''
+          AND MO.BUYERCD = ''
+          AND MO.STATUS = ''
+          AND MO.ADDDATE BETWEEN '' AND ''
+          AND MU.USERNM = ''
+          AND MB.BUYERNM = ''
+    </select>
+</mapper>

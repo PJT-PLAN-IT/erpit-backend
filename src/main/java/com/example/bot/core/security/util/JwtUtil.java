@@ -142,4 +142,14 @@ public class JwtUtil {
         }
         return refreshToken;
     }
+
+    /**
+     * 쿠키로부터 사용자의 Role 을 추출하는 메소드
+     *
+     * @param request p1
+     * @return String
+     */
+    public String getRoleByCookie(HttpServletRequest request) {
+        return getRole(getRefreshTokenByCookie(request));
+    }
 }

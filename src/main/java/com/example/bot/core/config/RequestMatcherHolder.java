@@ -16,9 +16,12 @@ public class RequestMatcherHolder {
             "/api/test/**"
     );
     private final List<String> PERMIT_USER_URLS = List.of(
-            "/api/order/**"
+            "/api/order/**",
+            "/api/report/**"
     );
     private final List<String> PERMIT_ADMIN_URLS = List.of(
-            "/api/admin/**"
+            "/api/admin/**",
+            "/api/buyer/**",
+            "/api/item/**"
     );
 }
