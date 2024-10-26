@@ -7,7 +7,7 @@ import lombok.*;
 import java.time.LocalDateTime;
 
 /**
- * User Entity
+ * 사원 마스터 테이블
  */
 @SuppressWarnings({"JpaDataSourceORMInspection", "SpellCheckingInspection"})
 @Getter

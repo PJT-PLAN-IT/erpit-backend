@@ -5,7 +5,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 /**
- * Auth Entity
+ * 권한 마스터 테이블
  */
 @SuppressWarnings({"JpaDataSourceORMInspection", "SpellCheckingInspection"})
 @Getter

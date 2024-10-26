@@ -1,6 +1,6 @@
 package com.example.bot.core.security.util;
 
-import com.example.bot.biz.entity.RefreshToken;
+import com.example.bot.biz.entity.core.RefreshToken;
 import com.example.bot.biz.repository.RefreshRepository;
 import io.jsonwebtoken.Jwts;
 import jakarta.servlet.http.Cookie;

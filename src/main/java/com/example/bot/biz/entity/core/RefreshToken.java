@@ -1,4 +1,4 @@
-package com.example.bot.biz.entity;
+package com.example.bot.biz.entity.core;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -6,7 +6,7 @@ import lombok.*;
 import java.time.LocalDateTime;
 
 /**
- * Refresh Token Entity
+ * Refresh Token 테이블
  */
 @SuppressWarnings({"JpaDataSourceORMInspection", "SpellCheckingInspection"})
 @Getter
