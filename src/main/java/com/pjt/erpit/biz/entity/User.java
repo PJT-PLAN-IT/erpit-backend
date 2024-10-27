@@ -1,0 +1,39 @@
+package com.pjt.erpit.biz.entity;
+
+import com.pjt.erpit.biz.entity.core.BaseEntity;
+import jakarta.persistence.*;
+import lombok.*;
+
+import java.time.LocalDateTime;
+
+/**
+ * 사원 마스터 테이블
+ */
+@SuppressWarnings({"JpaDataSourceORMInspection", "SpellCheckingInspection"})
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
+@Entity(name = "M_USER")
+public final class User extends BaseEntity {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "userid")
+    private Long id;  // 사원ID
+
+    @Column(name = "password")
+    private String password; // 비밀번호
+
+    @Column(name = "usercd")
+    private String usercd; // 사원코드
+
+    @Column(name = "usernm")
+    private String usernm; // 사원명
+
+    @Column(name = "birthdate")
+    private LocalDateTime birthdate; // 생일일자
+
+    @Column(name = "joindate")
+    private LocalDateTime joindate; // 입사일자
+}

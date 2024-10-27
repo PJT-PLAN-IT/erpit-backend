@@ -2,9 +2,9 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!--suppress SqlNoDataSourceInspection -->
 <!-- 오더 관련 Mapper -->
-<mapper namespace="com.example.bot.biz.mapper.OrderMapper">
+<mapper namespace="com.pjt.erpit.biz.mapper.OrderMapper">
     <!-- 오더 리스트 조회 -->
-    <select id="getOrderList" parameterType="com.example.bot.biz.dto.Order.OrderListDTO$Request" resultType="com.example.bot.biz.dto.Order.OrderListDTO$Response">
+    <select id="getOrderList" parameterType="com.pjt.erpit.biz.dto.Order.OrderListDTO$Request" resultType="com.pjt.erpit.biz.dto.Order.OrderListDTO$Response">
         SELECT *
         FROM M_ORDER MO
                  INNER JOIN M_USER MU
