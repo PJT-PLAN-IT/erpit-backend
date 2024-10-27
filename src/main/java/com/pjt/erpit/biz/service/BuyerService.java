@@ -28,7 +28,7 @@ public class BuyerService {
      * 바이어코드 중복 검사
      *
      * @param buyercd p1
-     * @return Boolean
+     * @return CheckDuplicationDTO.Response
      */
     public CheckDuplicationDTO.Response checkDuplication(String buyercd) {
         CheckDuplicationDTO.Response response = new CheckDuplicationDTO.Response();
