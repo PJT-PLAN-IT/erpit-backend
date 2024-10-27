@@ -27,17 +27,17 @@ public class Item extends BaseEntity {
     private String itemnm;  // 판매부번명
 
     @Column(name = "originprice")
-    private Integer originprice;  // 원가
+    private Integer originprice = 0;  // 원가
 
     @Column(name = "supplyprice")
-    private Integer supplyprice;  // 공급가
+    private Integer supplyprice = 0;  // 공급가
 
     @Column(name = "unit")
     private String unit;  // 단위
 
     @Column(name = "stock")
-    private Integer stock;  // 재고
+    private Integer stock = 0;  // 재고
 
     @Column(name = "useyn")
-    private String useyn;  // 사용여부
+    private String useyn = "Y";  // 사용여부
 }

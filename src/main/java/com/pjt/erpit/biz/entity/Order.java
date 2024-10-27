@@ -26,7 +26,7 @@ public class Order extends BaseEntity {
     private String orderno;  // 오더번호
 
     @Column(name = "orderdate")
-    private LocalDateTime orderdate;  // 오더일자
+    private LocalDateTime orderdate = LocalDateTime.now();  // 오더일자
 
     @Column(name = "usercd")
     private String usercd;  // 사원코드

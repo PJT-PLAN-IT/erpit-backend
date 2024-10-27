@@ -24,7 +24,7 @@ public class AdminController {
     }
 
     /**
-     * 유저 생성
+     * 사원 생성
      *
      * @param signupDTO p1
      * @return ResponseResult<?>
