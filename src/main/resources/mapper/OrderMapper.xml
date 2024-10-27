@@ -18,4 +18,30 @@
           AND MU.USERNM = ''
           AND MB.BUYERNM = ''
     </select>
+
+    <!-- 오더 생성 -->
+    <insert id="createOrder" parameterType="com.pjt.erpit.biz.entity.Order" useGeneratedKeys="true" keyProperty="orderid">
+        INSERT INTO M_ORDER (ORDERNO,
+                             ORDERDATE,
+                             USERCD,
+                             BUYERCD,
+                             STATUS,
+                             ADDIPADDR,
+                             ADDUSER,
+                             ADDDATE,
+                             UPDIPADDR,
+                             UPDUSER,
+                             UPDDATE)
+        VALUES (NEXT VALUE FOR SQT_M_ORDER_ORDERNO,
+                #{orderdate},
+                #{usercd},
+                #{buyercd},
+                #{status},
+                #{addipaddr},
+                #{adduser},
+                #{adddate},
+                #{updipaddr},
+                #{upduser},
+                #{upddate})
+    </insert>
 </mapper>

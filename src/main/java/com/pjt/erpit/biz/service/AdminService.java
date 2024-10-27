@@ -5,6 +5,7 @@ import com.pjt.erpit.biz.entity.Auth;
 import com.pjt.erpit.biz.entity.User;
 import com.pjt.erpit.biz.repository.AuthRepository;
 import com.pjt.erpit.biz.repository.UserRepository;
+import com.pjt.erpit.core.util.DateUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -13,7 +14,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
 /**
  * 어드민 관련 Service
@@ -44,8 +44,8 @@ public class AdminService {
     @Transactional
     public void signup(SignupDTO.Request signupDTO) {
         String usernm = signupDTO.getUsernm();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        LocalDateTime birthdate = LocalDateTime.parse(signupDTO.getBirthdate() + " 00:00:00", formatter);
+        LocalDateTime birthdate = DateUtils.toLocalDate(signupDTO.getBirthdate());
+        LocalDateTime joindate = DateUtils.toLocalDate(signupDTO.getJoindate());
 
         // usercd 생성
         String year = Integer.toString(LocalDate.now().getYear());
@@ -76,7 +76,7 @@ public class AdminService {
         user.setPassword(bCryptPasswordEncoder.encode(password));
         user.setUsernm(usernm);
         user.setBirthdate(birthdate);
-        user.setJoindate(LocalDateTime.now());
+        user.setJoindate(joindate);
         user.setAddipaddr(ip);
         user.setUpdipaddr(ip);
 

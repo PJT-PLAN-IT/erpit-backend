@@ -1,16 +1,14 @@
 package com.pjt.erpit.biz.repository;
 
-import com.pjt.erpit.biz.entity.Item;
+import com.pjt.erpit.biz.entity.Order;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 /**
- * Item Repository
+ * Order Repository
  */
 @SuppressWarnings({"SpellCheckingInspection"})
 @Repository
-public interface ItemRepository extends JpaRepository<Item, Long> {
-    Boolean existsByItemcd(String itemcd);
-
-    Item findByItemcd(String itemcd);
+public interface OrderRepository extends JpaRepository<Order, Long> {
+    Order findByOrderid(Long orderid);
 }

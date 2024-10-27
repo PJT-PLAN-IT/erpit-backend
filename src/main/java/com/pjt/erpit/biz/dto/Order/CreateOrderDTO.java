@@ -25,11 +25,11 @@ public class CreateOrderDTO {
         private String status;
 
         @NotNull
-        private List<OrderItemList> orderItemList;
+        private List<OrderItem> orderItemList;
     }
 
     @Data
-    public static class OrderItemList {
+    public static class OrderItem {
         @NotNull
         private String itemcd;
 

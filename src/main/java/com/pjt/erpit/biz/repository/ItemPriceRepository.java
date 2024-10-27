@@ -9,4 +9,5 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface ItemPriceRepository extends JpaRepository<ItemPrice, Long> {
+    ItemPrice findByBuyercdAndItemcd(String buyercd, String itemcd);
 }

@@ -15,5 +15,8 @@ public class SignupDTO {
 
         @NotNull
         private String birthdate;
+
+        @NotNull
+        private String joindate;
     }
 }

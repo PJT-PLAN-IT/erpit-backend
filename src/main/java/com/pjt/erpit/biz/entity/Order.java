@@ -23,7 +23,7 @@ public class Order extends BaseEntity {
     private Long orderid;  // 오더ID
 
     @Column(name = "orderno")
-    private String orderno;  // 오더번호
+    private Long orderno;  // 오더번호
 
     @Column(name = "orderdate")
     private LocalDateTime orderdate = LocalDateTime.now();  // 오더일자

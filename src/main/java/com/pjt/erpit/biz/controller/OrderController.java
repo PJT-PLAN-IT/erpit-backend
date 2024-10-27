@@ -2,6 +2,7 @@ package com.pjt.erpit.biz.controller;
 
 import com.pjt.erpit.biz.dto.Order.CreateOrderDTO;
 import com.pjt.erpit.biz.dto.Order.OrderListDTO;
+import com.pjt.erpit.biz.service.OrderService;
 import com.pjt.erpit.core.config.ResponseResult;
 import com.pjt.erpit.core.security.util.JwtUtil;
 import jakarta.servlet.http.HttpServletRequest;
@@ -19,9 +20,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/order")
 public class OrderController {
     private final JwtUtil jwtUtil;
+    private final OrderService orderService;
 
-    public OrderController(JwtUtil jwtUtil) {
+    public OrderController(JwtUtil jwtUtil, OrderService orderService) {
         this.jwtUtil = jwtUtil;
+        this.orderService = orderService;
     }
 
     /**
@@ -41,11 +44,12 @@ public class OrderController {
     /**
      * 오더 생성
      *
-     * @param createOrderDTO p1
+     * @param request        p1
+     * @param createOrderDTO p2
      * @return ResponseResult<?>
      */
     @PostMapping
-    public ResponseResult<?> createOrder(@Valid @RequestBody CreateOrderDTO.Request createOrderDTO) {
-        return null;
+    public ResponseResult<?> createOrder(HttpServletRequest request, @Valid @RequestBody CreateOrderDTO.Request createOrderDTO) {
+        return orderService.createOrder(request, createOrderDTO);
     }
 }
