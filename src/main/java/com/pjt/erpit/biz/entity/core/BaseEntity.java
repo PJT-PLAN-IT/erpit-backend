@@ -23,24 +23,24 @@ import java.time.LocalDateTime;
 @Setter
 public abstract class BaseEntity {
     @Column(name = "addipaddr", updatable = false)
-    private String addipaddr; // 생성IP
+    private String addipaddr = "0.0.0.0"; // 생성IP
 
     @CreatedBy
     @Column(name = "adduser", updatable = false)
-    private String adduser; // 생성자
+    private String adduser = ""; // 생성자
 
     @CreatedDate
     @Column(name = "adddate", updatable = false)
-    private LocalDateTime adddate; // 생성일자
+    private LocalDateTime adddate = LocalDateTime.now(); // 생성일자
 
     @Column(name = "updipaddr")
-    private String updipaddr; // 수정IP
+    private String updipaddr = "0.0.0.0"; // 수정IP
 
     @LastModifiedBy
     @Column(name = "upduser")
-    private String upduser; // 수정자
+    private String upduser = ""; // 수정자
 
     @LastModifiedDate
     @Column(name = "upddate")
-    private LocalDateTime upddate; // 수정일자
+    private LocalDateTime upddate = LocalDateTime.now(); // 수정일자
 }

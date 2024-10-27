@@ -11,9 +11,11 @@ import java.util.List;
 /**
  * Buyer Repository
  */
+@SuppressWarnings({"SpellCheckingInspection"})
 @Repository
 public interface BuyerRepository extends JpaRepository<Buyer, Long> {
 
     @Query("SELECT b FROM M_BUYER b WHERE b.buyercd = :buyer OR b.buyernm = :buyer")
     List<Buyer> findByBuyercdOrBuyernm(@Param("buyer") String buyer);
+    Boolean existsByBuyercd(String buyercd);
 }

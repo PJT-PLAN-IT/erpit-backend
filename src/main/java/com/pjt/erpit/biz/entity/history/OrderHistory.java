@@ -1,5 +1,6 @@
 package com.pjt.erpit.biz.entity.history;
 
+import com.pjt.erpit.biz.entity.Order;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -25,7 +26,7 @@ public class OrderHistory {
     private String orderno;  // 오더번호
 
     @Column(name = "orderdate")
-    private LocalDateTime orderdate;  // 오더일자
+    private LocalDateTime orderdate = LocalDateTime.now();  // 오더일자
 
     @Column(name = "usercd")
     private String usercd;  // 사원코드
@@ -43,20 +44,20 @@ public class OrderHistory {
     private String rejectreason;  // 거절사유
 
     @Column(name = "addipaddr")
-    private String addipaddr; // 생성IP
+    private String addipaddr = "0.0.0.0"; // 생성IP
 
     @Column(name = "adduser")
-    private String adduser; // 생성자
+    private String adduser = ""; // 생성자
 
     @Column(name = "adddate")
-    private LocalDateTime adddate; // 생성일자
+    private LocalDateTime adddate = LocalDateTime.now(); // 생성일자
 
     @Column(name = "updipaddr")
-    private String updipaddr; // 수정IP
+    private String updipaddr = "0.0.0.0"; // 수정IP
 
     @Column(name = "upduser")
-    private String upduser; // 수정자
+    private String upduser = ""; // 수정자
 
     @Column(name = "upddate")
-    private LocalDateTime upddate; // 수정일자
+    private LocalDateTime upddate = LocalDateTime.now(); // 수정일자
 }

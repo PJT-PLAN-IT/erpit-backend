@@ -24,5 +24,5 @@ public class Auth extends BaseEntity {
     private String usercd;  // 사원코드
 
     @Column(name = "auth")
-    private String auth; // 권한
+    private String auth = "ROLE_USER"; // 권한
 }

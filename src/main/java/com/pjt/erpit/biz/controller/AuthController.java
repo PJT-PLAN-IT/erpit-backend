@@ -4,7 +4,6 @@ import com.pjt.erpit.biz.dto.auth.LoginDTO;
 import com.pjt.erpit.biz.service.AuthService;
 import com.pjt.erpit.core.config.ResponseResult;
 import com.pjt.erpit.core.security.util.JwtUtil;
-import io.swagger.v3.oas.annotations.Operation;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
@@ -17,7 +16,6 @@ import org.springframework.web.bind.annotation.RestController;
  * 권한 관련 Controller
  * auth: all
  */
-@SuppressWarnings("SpellCheckingInspection")
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
@@ -60,7 +58,6 @@ public class AuthController {
      * @param response p2
      * @return ResponseResult<?>
      */
-    @Operation(summary = "Access Token 재발급")
     @PostMapping("/refresh")
     public ResponseResult<?> refresh(HttpServletRequest request, HttpServletResponse response) {
         return authService.refresh(request, response);
