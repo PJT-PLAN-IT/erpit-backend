@@ -19,6 +19,9 @@ import java.time.LocalDateTime;
 public class OrderHistory {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "orderhistoryid")
+    private Long orderhistoryid;  // 오더히스토리ID
+
     @Column(name = "orderid")
     private Long orderid;  // 오더ID
 
