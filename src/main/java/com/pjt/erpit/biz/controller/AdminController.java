@@ -44,6 +44,6 @@ public class AdminController {
      */
     @PostMapping("/reset-password")
     public ResponseResult<?> resetPassword(@Valid @RequestBody ResetPasswordDTO.Request resetPasswordDTO) {
-        return ResponseResult.ofSuccess("success", null);
+        return adminService.resetPassword(resetPasswordDTO);
     }
 }

@@ -12,8 +12,5 @@ public class ResetPasswordDTO {
     public static class Request {
         @NotNull
         private String usercd;
-
-        @NotNull
-        private String password;
     }
 }
