@@ -15,7 +15,8 @@ import java.util.List;
 @Repository
 public interface BuyerRepository extends JpaRepository<Buyer, Long> {
 
-    @Query("SELECT b FROM M_BUYER b WHERE b.buyercd = :buyer OR b.buyernm = :buyer")
+    @Query("SELECT b FROM M_BUYER b WHERE LOWER(b.buyercd) LIKE LOWER(CONCAT('%', :buyer, '%')) OR LOWER(b.buyernm) LIKE LOWER(CONCAT('%', :buyer, '%'))")
     List<Buyer> findByBuyercdOrBuyernm(@Param("buyer") String buyer);
+
     Boolean existsByBuyercd(String buyercd);
 }

@@ -11,7 +11,7 @@ import lombok.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class BuyerListDto {
+public class BuyerListDTO {
 
     @NotNull
     private Long buyerId;

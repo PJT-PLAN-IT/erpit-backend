@@ -1,5 +1,6 @@
 package com.pjt.erpit.biz.entity;
 
+import com.pjt.erpit.biz.dto.buyer.UpdateBuyerDTO;
 import com.pjt.erpit.biz.entity.core.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
@@ -40,4 +41,28 @@ public class Buyer extends BaseEntity {
 
     @Column(name = "addressdetail")
     private String addressdetail;  // 상세주소
+
+    public void updateBuyer(UpdateBuyerDTO updateBuyerDto) {
+        if (updateBuyerDto.getBuyerCd() != null) {
+            this.buyercd = updateBuyerDto.getBuyerCd();
+        }
+        if (updateBuyerDto.getBuyerNm() != null) {
+            this.buyernm = updateBuyerDto.getBuyerNm();
+        }
+        if (updateBuyerDto.getTel() != null) {
+            this.tel = updateBuyerDto.getTel();
+        }
+        if (updateBuyerDto.getEmail() != null) {
+            this.email = updateBuyerDto.getEmail();
+        }
+        if (updateBuyerDto.getZipcode() != null) {
+            this.zipcode = updateBuyerDto.getZipcode();
+        }
+        if (updateBuyerDto.getAddress() != null) {
+            this.address = updateBuyerDto.getAddress();
+        }
+        if (updateBuyerDto.getAddressDetail() != null) {
+            this.addressdetail = updateBuyerDto.getAddressDetail();
+        }
+    }
 }

@@ -1,12 +1,12 @@
 package com.pjt.erpit.biz.service;
 
-import com.pjt.erpit.biz.dto.buyer.BuyerListDto;
+import com.pjt.erpit.biz.dto.buyer.BuyerListDTO;
 import com.pjt.erpit.biz.dto.buyer.CheckDuplicationDTO;
 import com.pjt.erpit.biz.dto.buyer.CreateBuyerDTO;
+import com.pjt.erpit.biz.dto.buyer.UpdateBuyerDTO;
 import com.pjt.erpit.biz.entity.Buyer;
 import com.pjt.erpit.biz.repository.BuyerRepository;
 import com.pjt.erpit.core.config.ResponseResult;
-import lombok.RequiredArgsConstructor;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -15,7 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.format.DateTimeFormatter;
 import java.util.List;
-import org.springframework.transaction.annotation.Transactional;
+import java.util.Optional;
 
 /**
  * 바이어 관련 Service
@@ -24,10 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Slf4j
 @Service
 @Transactional(readOnly = true)
-@RequiredArgsConstructor
 public class BuyerService {
-
-    private final BuyerRepository buyerRepository;
 
     private final BuyerRepository buyerRepository;
 
@@ -87,11 +84,11 @@ public class BuyerService {
      * @param buyer
      * @return
      */
-    public List<BuyerListDto> buyerList(String buyer) {
+    public List<BuyerListDTO> buyerList(String buyer) {
         List<Buyer> buyerlist = buyerRepository.findByBuyercdOrBuyernm(buyer);
-        List<BuyerListDto> result = buyerlist.stream()
+        List<BuyerListDTO> result = buyerlist.stream()
                 .map(b -> {
-                    BuyerListDto dto = entityToDto(b);
+                    BuyerListDTO dto = entityToDto(b);
                     return dto;
                 })
                 .toList();
@@ -99,12 +96,27 @@ public class BuyerService {
     }
 
     /**
+     * 바이어 수정
+     * @param updateBuyerDTO
+     * @return
+     */
+    @Transactional
+    public ResponseResult<?> updateBuyer(UpdateBuyerDTO updateBuyerDTO) {
+        Optional<Buyer> buyerId = buyerRepository.findById(updateBuyerDTO.getBuyerId());
+        if (buyerId.isPresent()) {
+            Buyer buyer = buyerId.get();
+            buyer.updateBuyer(updateBuyerDTO);
+        }
+        return ResponseResult.ofSuccess("success", null);
+    }
+
+    /**
      * 바이어 조회 dto 변경
      * @param buyer
      * @return
      */
-    private BuyerListDto entityToDto(Buyer buyer) {
-        return BuyerListDto.builder()
+    private BuyerListDTO entityToDto(Buyer buyer) {
+        return BuyerListDTO.builder()
                 .buyerId(buyer.getBuyerid())
                 .buyerCd(buyer.getBuyercd())
                 .buyerNm(buyer.getBuyernm())
