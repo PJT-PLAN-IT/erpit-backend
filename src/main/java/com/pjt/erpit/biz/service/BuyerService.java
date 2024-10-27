@@ -1,7 +1,9 @@
 package com.pjt.erpit.biz.service;
 
+import com.pjt.erpit.biz.dto.buyer.BuyerListDTO;
 import com.pjt.erpit.biz.dto.buyer.CheckDuplicationDTO;
 import com.pjt.erpit.biz.dto.buyer.CreateBuyerDTO;
+import com.pjt.erpit.biz.dto.buyer.UpdateBuyerDTO;
 import com.pjt.erpit.biz.entity.Buyer;
 import com.pjt.erpit.biz.repository.BuyerRepository;
 import com.pjt.erpit.core.config.ResponseResult;
@@ -11,13 +13,19 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.format.DateTimeFormatter;
+import java.util.List;
+import java.util.Optional;
+
 /**
  * 바이어 관련 Service
  */
 @SuppressWarnings({"CallToPrintStackTrace", "ExtractMethodRecommender", "SpellCheckingInspection"})
 @Slf4j
 @Service
+@Transactional(readOnly = true)
 public class BuyerService {
+
     private final BuyerRepository buyerRepository;
 
     public BuyerService(BuyerRepository buyerRepository) {
@@ -69,5 +77,54 @@ public class BuyerService {
         }
 
         return ResponseResult.ofSuccess("success", null);
+    }
+
+    /**
+     * 바이어 조회
+     * @param buyer
+     * @return
+     */
+    public List<BuyerListDTO> buyerList(String buyer) {
+        List<Buyer> buyerlist = buyerRepository.findByBuyercdOrBuyernm(buyer);
+        List<BuyerListDTO> result = buyerlist.stream()
+                .map(b -> {
+                    BuyerListDTO dto = entityToDto(b);
+                    return dto;
+                })
+                .toList();
+        return result;
+    }
+
+    /**
+     * 바이어 수정
+     * @param updateBuyerDTO
+     * @return
+     */
+    @Transactional
+    public ResponseResult<?> updateBuyer(UpdateBuyerDTO updateBuyerDTO) {
+        Optional<Buyer> buyerId = buyerRepository.findById(updateBuyerDTO.getBuyerId());
+        if (buyerId.isPresent()) {
+            Buyer buyer = buyerId.get();
+            buyer.updateBuyer(updateBuyerDTO);
+        }
+        return ResponseResult.ofSuccess("success", null);
+    }
+
+    /**
+     * 바이어 조회 dto 변경
+     * @param buyer
+     * @return
+     */
+    private BuyerListDTO entityToDto(Buyer buyer) {
+        return BuyerListDTO.builder()
+                .buyerId(buyer.getBuyerid())
+                .buyerCd(buyer.getBuyercd())
+                .buyerNm(buyer.getBuyernm())
+                .tel(buyer.getTel())
+                .email(buyer.getEmail())
+                .zipCode(buyer.getZipcode())
+                .address(buyer.getAddress() + buyer.getAddressdetail())
+                .addDate(buyer.getAdddate().format(DateTimeFormatter.ofPattern("yyyy.MM.dd")))
+                .build();
     }
 }
