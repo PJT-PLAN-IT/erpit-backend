@@ -22,5 +22,9 @@ public class LoginDTO {
         private String usercd;
 
         private String usernm;
+
+        private String role;
+
+        private String accessToken;
     }
 }

@@ -78,6 +78,8 @@ public class AuthService {
         LoginDTO.Response loginResponse = new LoginDTO.Response();
         loginResponse.setUsercd(usercd);
         loginResponse.setUsernm(user.getUsernm());
+        loginResponse.setRole(role);
+        loginResponse.setAccessToken(accessToken);
 
         return ResponseResult.ofSuccess("success", loginResponse);
     }
@@ -143,14 +145,21 @@ public class AuthService {
             return ResponseResult.ofFailure(HttpStatus.BAD_REQUEST, validRefreshToken);
         }
 
-        String username = jwtUtil.getUsername(refreshToken);
+        String usercd = jwtUtil.getUsername(refreshToken);
         String role = jwtUtil.getRole(refreshToken);
 
         // Access Token 생성
-        String newAccess = jwtUtil.createJwt("Access-Token", username, role, JwtUtil.ACCESS_TOKEN_EXPIRE);
+        String newAccess = jwtUtil.createJwt("Access-Token", usercd, role, JwtUtil.ACCESS_TOKEN_EXPIRE);
 
         // Response
         response.setHeader("Access-Token", newAccess);
+
+        User user = userRepository.findByUsercd(usercd);
+        LoginDTO.Response loginResponse = new LoginDTO.Response();
+        loginResponse.setUsercd(usercd);
+        loginResponse.setUsernm(user.getUsernm());
+        loginResponse.setRole(role);
+        loginResponse.setAccessToken(newAccess);
 
         // Access Token 갱신할 때 Refresh Token도 갱신하고 싶으면 주석 해제하면 됨
 //        // Refresh Token 생성
@@ -160,7 +169,7 @@ public class AuthService {
 //        jwtUtil.addRefreshToken(username, newRefresh, JwtUtil.REFRESH_TOKEN_EXPIRE);
 //        response.addCookie(jwtUtil.createRefreshCookie(newRefresh));
 
-        return ResponseResult.ofSuccess("success", null);
+        return ResponseResult.ofSuccess("success", loginResponse);
     }
 
     /**
