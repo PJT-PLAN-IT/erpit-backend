@@ -1,5 +1,6 @@
 package com.pjt.erpit.core.security.filter;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pjt.erpit.biz.entity.User;
 import com.pjt.erpit.biz.repository.AuthRepository;
 import com.pjt.erpit.biz.repository.RefreshRepository;
@@ -8,7 +9,6 @@ import com.pjt.erpit.core.config.ResponseResult;
 import com.pjt.erpit.core.security.util.CustomUserDetails;
 import com.pjt.erpit.core.security.util.JwtUtil;
 import com.pjt.erpit.core.util.StringUtils;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -92,56 +92,59 @@ public class JwtFilter extends OncePerRequestFilter {
             // Cookie 에서 refresh 토큰 조회
             String refreshToken = null;
             Cookie[] cookies = request.getCookies();
-            for (Cookie cookie : cookies) {
-                if (cookie.getName().equals("Refresh-Token")) {
-                    refreshToken = cookie.getValue();
+
+            if (cookies != null) {
+                for (Cookie cookie : cookies) {
+                    if (cookie.getName().equals("Refresh-Token")) {
+                        refreshToken = cookie.getValue();
+                    }
                 }
-            }
 
-            // 토큰 유무 검증
-            if (refreshToken == null || refreshToken.isEmpty()) {
-                response.setContentType("application/json");
-                response.setCharacterEncoding("UTF-8");
-                response.getOutputStream().write(objectMapper.writeValueAsString(ResponseResult.ofFailure(HttpStatus.UNAUTHORIZED, "refresh token is empty")).getBytes());
-                response.setStatus(401);
-                return;
-            }
+                // 토큰 유무 검증
+                if (refreshToken == null || refreshToken.isEmpty()) {
+                    response.setContentType("application/json");
+                    response.setCharacterEncoding("UTF-8");
+                    response.getOutputStream().write(objectMapper.writeValueAsString(ResponseResult.ofFailure(HttpStatus.UNAUTHORIZED, "refresh token is empty")).getBytes());
+                    response.setStatus(401);
+                    return;
+                }
 
-            // 토큰 만료 검증 => 다음 필터 진행하지 않음
-            try {
-                jwtUtil.isExpired(refreshToken);
-            } catch (ExpiredJwtException e) {
-                response.setContentType("application/json");
-                response.setCharacterEncoding("UTF-8");
-                response.getOutputStream().write(objectMapper.writeValueAsString(ResponseResult.ofFailure(HttpStatus.UNAUTHORIZED, "refresh token is expired")).getBytes());
-                response.setStatus(401);
-                return;
-            }
+                // 토큰 만료 검증 => 다음 필터 진행하지 않음
+                try {
+                    jwtUtil.isExpired(refreshToken);
+                } catch (ExpiredJwtException e) {
+                    response.setContentType("application/json");
+                    response.setCharacterEncoding("UTF-8");
+                    response.getOutputStream().write(objectMapper.writeValueAsString(ResponseResult.ofFailure(HttpStatus.UNAUTHORIZED, "refresh token is expired")).getBytes());
+                    response.setStatus(401);
+                    return;
+                }
 
-            // Token Category 맞는지 확인
-            String refreshCategory = jwtUtil.getCategory(refreshToken);
-            if (!refreshCategory.equals("Access-Token")) {
-                response.setContentType("application/json");
-                response.setCharacterEncoding("UTF-8");
-                response.getOutputStream().write(objectMapper.writeValueAsString(ResponseResult.ofFailure(HttpStatus.UNAUTHORIZED, "refresh token is invalid")).getBytes());
-                response.setStatus(401);
-                return;
-            }
+                // Token Category 맞는지 확인
+                String refreshCategory = jwtUtil.getCategory(refreshToken);
+                if (!refreshCategory.equals("Access-Token")) {
+                    response.setContentType("application/json");
+                    response.setCharacterEncoding("UTF-8");
+                    response.getOutputStream().write(objectMapper.writeValueAsString(ResponseResult.ofFailure(HttpStatus.UNAUTHORIZED, "refresh token is invalid")).getBytes());
+                    response.setStatus(401);
+                    return;
+                }
 
-            // Refresh 토큰이 DB에 저장되어 있는지 확인
-            Boolean isExist = refreshRepository.existsByToken(refreshToken);
-            if (!isExist) {
-                response.setContentType("application/json");
-                response.setCharacterEncoding("UTF-8");
-                response.getOutputStream().write(objectMapper.writeValueAsString(ResponseResult.ofFailure(HttpStatus.UNAUTHORIZED, "refresh token is not exist")).getBytes());
-                response.setStatus(401);
-                return;
-            }
+                // Refresh 토큰이 DB에 저장되어 있는지 확인
+                Boolean isExist = refreshRepository.existsByToken(refreshToken);
+                if (!isExist) {
+                    response.setContentType("application/json");
+                    response.setCharacterEncoding("UTF-8");
+                    response.getOutputStream().write(objectMapper.writeValueAsString(ResponseResult.ofFailure(HttpStatus.UNAUTHORIZED, "refresh token is not exist")).getBytes());
+                    response.setStatus(401);
+                    return;
+                }
 
-            String username = jwtUtil.getUsername(refreshToken);
-            String role = jwtUtil.getRole(refreshToken);
-            String newAccess = jwtUtil.createJwt("Access-Token", username, role, JwtUtil.ACCESS_TOKEN_EXPIRE);
-            response.setHeader("Access-Token", newAccess);
+                String username = jwtUtil.getUsername(refreshToken);
+                String role = jwtUtil.getRole(refreshToken);
+                String newAccess = jwtUtil.createJwt("Access-Token", username, role, JwtUtil.ACCESS_TOKEN_EXPIRE);
+                response.setHeader("Access-Token", newAccess);
+            }
         }
 
         // 토큰에서 username 획득

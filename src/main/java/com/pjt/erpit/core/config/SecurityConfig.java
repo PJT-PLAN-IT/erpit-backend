@@ -72,7 +72,7 @@ public class SecurityConfig {
         http.cors((cors) -> cors.configurationSource(request -> {
             CorsConfiguration configuration = new CorsConfiguration();
             configuration.setAllowCredentials(true);
-            configuration.setAllowedOrigins(Collections.singletonList("http://localhost:3000"));
+            configuration.setAllowedOrigins(Collections.singletonList("http://localhost:5173"));
             configuration.setAllowedMethods(Collections.singletonList("*"));
             configuration.setAllowedHeaders(Collections.singletonList("*"));
             configuration.setMaxAge(3600L);

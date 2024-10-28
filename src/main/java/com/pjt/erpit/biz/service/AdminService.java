@@ -1,13 +1,17 @@
 package com.pjt.erpit.biz.service;
 
+import com.pjt.erpit.biz.dto.admin.ResetPasswordDTO;
 import com.pjt.erpit.biz.dto.admin.SignupDTO;
 import com.pjt.erpit.biz.entity.Auth;
 import com.pjt.erpit.biz.entity.User;
 import com.pjt.erpit.biz.repository.AuthRepository;
 import com.pjt.erpit.biz.repository.UserRepository;
+import com.pjt.erpit.core.config.ResponseResult;
 import com.pjt.erpit.core.util.DateUtils;
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,7 +22,8 @@ import java.time.LocalDateTime;
 /**
  * 어드민 관련 Service
  */
-@SuppressWarnings("SpellCheckingInspection")
+@Slf4j
+@SuppressWarnings({"SpellCheckingInspection", "CallToPrintStackTrace"})
 @Service
 public class AdminService {
     private final UserRepository userRepository;
@@ -89,5 +94,34 @@ public class AdminService {
         auth.setUpdipaddr(ip);
 
         authRepository.save(auth);
+    }
+
+    /**
+     * 비밀번호 초기화
+     *
+     * @param resetPasswordDTO p1
+     * @return ResponseResult<?>
+     */
+    @Transactional
+    public ResponseResult<?> resetPassword(ResetPasswordDTO.Request resetPasswordDTO) {
+        User user = userRepository.findByUsercd(resetPasswordDTO.getUsercd());
+        if (user == null) {
+            return ResponseResult.ofFailure(HttpStatus.BAD_REQUEST, "user is not exist");
+
+        }
+        String ip = request.getRemoteAddr();
+
+        user.setPassword(bCryptPasswordEncoder.encode(password));
+        user.setUpdipaddr(ip);
+
+        try {
+            userRepository.save(user);
+        } catch (Exception e) {
+            e.printStackTrace();
+            log.debug(e.getMessage());
+            return ResponseResult.ofFailure(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
+        }
+
+        return ResponseResult.ofSuccess("success", null);
     }
 }

@@ -18,6 +18,9 @@ import java.time.LocalDateTime;
 public class ItemHistory {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "itemhistoryid")
+    private Long itemhistoryid;  // 판매부번히스토리ID
+
     @Column(name = "itemid")
     private Long itemid;  // 판매부번ID
 
