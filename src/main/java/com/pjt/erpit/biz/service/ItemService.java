@@ -206,7 +206,7 @@ public class ItemService {
         List<ItemPrice> itemPriceList = itemPriceRepository.searchItemPrice(item, buyer);
         List<ItemPriceListDTO> result = itemPriceList.stream()
                 .map(i -> {
-                    Item searchItem = itemRepository.searchItem(i.getItemcd());
+                    SearchItemDTO searchItem = itemRepository.searchItem(i.getItemcd());
                     String buyernm = buyerRepository.searchBuyer(i.getBuyercd());
                     return  entityToDto(i, searchItem, buyernm);
                 })
@@ -263,15 +263,15 @@ public class ItemService {
      * @param buyernm
      * @return
      */
-    private ItemPriceListDTO entityToDto(ItemPrice itemPrice, Item searchItem, String buyernm) {
+    private ItemPriceListDTO entityToDto(ItemPrice itemPrice, SearchItemDTO searchItem, String buyernm) {
 
         return ItemPriceListDTO.builder()
                 .itemPriceId(itemPrice.getItempriceid())
                 .buyerCd(itemPrice.getBuyercd())
                 .buyerNm(buyernm)
                 .itemCd(itemPrice.getItemcd())
-                .itemNm(searchItem.getItemnm())
-                .originPrice(searchItem.getOriginprice())
+                .itemNm(searchItem.getItemNm())
+                .originPrice(searchItem.getOriginPrice())
                 .buyerSupplyPrice(itemPrice.getBuyersupplyprice())
                 .surtax(itemPrice.getSurtax())
                 .salesPrice(itemPrice.getSalesprice())
