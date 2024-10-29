@@ -2,6 +2,7 @@ package com.pjt.erpit.biz.repository;
 
 import com.pjt.erpit.biz.dto.item.SearchItemDTO;
 import com.pjt.erpit.biz.entity.Item;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -28,4 +29,6 @@ public interface ItemRepository extends JpaRepository<Item, Long> {
 
     @Query("SELECT i.itemnm FROM M_ITEM i WHERE i.itemcd = :itemcd")
     String findByItemnm(@Param("itemcd") String itemcd);
+
+    Item findByItemid(@NotNull Long itemId);
 }

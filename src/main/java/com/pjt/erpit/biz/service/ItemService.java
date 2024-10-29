@@ -3,13 +3,16 @@ package com.pjt.erpit.biz.service;
 import com.pjt.erpit.biz.dto.item.*;
 import com.pjt.erpit.biz.entity.Item;
 import com.pjt.erpit.biz.entity.ItemPrice;
+import com.pjt.erpit.biz.entity.Order;
 import com.pjt.erpit.biz.entity.history.ItemHistory;
+import com.pjt.erpit.biz.entity.history.OrderHistory;
 import com.pjt.erpit.biz.entity.history.convert.ItemConvert;
 import com.pjt.erpit.biz.repository.BuyerRepository;
 import com.pjt.erpit.biz.repository.ItemHistoryRepository;
 import com.pjt.erpit.biz.repository.ItemPriceRepository;
 import com.pjt.erpit.biz.repository.ItemRepository;
 import com.pjt.erpit.core.config.ResponseResult;
+import com.pjt.erpit.core.util.DateUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -165,11 +168,35 @@ public class ItemService {
     public ResponseResult<?> updateItem(HttpServletRequest request, UpdateItemDTO updateItemDTO) {
         String ip = request.getRemoteAddr();
 
-        Item item = updateItemDTO.toEntity();
+
+        Item item = itemRepository.findByItemid(updateItemDTO.getItemId());
+        item.setItemnm(updateItemDTO.getItemNm());
+        item.setOriginprice(updateItemDTO.getOriginPrice());
+        item.setSupplyprice(updateItemDTO.getSupplyPrice());
+        item.setStock(updateItemDTO.getStock());
+        item.setUnit(updateItemDTO.getUnit());
+        item.setUseyn(updateItemDTO.getUseYn());
+        item.setAddipaddr(ip);
+
         itemRepository.save(item);
+        item = itemRepository.findByItemid(updateItemDTO.getItemId());
 
         ItemHistory itemHistory = itemConvert.toItemHistory(item);
-        itemHistoryRepository.save(itemHistory);
+
+        try {
+            itemHistoryRepository.save(itemHistory);
+        } catch (Exception e) {
+            e.printStackTrace();
+            log.debug(e.getMessage());
+            return ResponseResult.ofFailure(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
+        }
+
+
+//        Item item = updateItemDTO.toEntity();
+//        itemRepository.save(item);
+//
+//        ItemHistory itemHistory = itemConvert.toItemHistory(item);
+//        itemHistoryRepository.save(itemHistory);
 
         return ResponseResult.ofSuccess("success", null);
     }
