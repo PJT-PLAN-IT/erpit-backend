@@ -140,6 +140,7 @@ public class ItemService {
 
     /**
      * 판매부번 조회
+     *
      * @param item
      * @return
      */
@@ -156,6 +157,7 @@ public class ItemService {
 
     /**
      * 판매부번 수정
+     *
      * @param updateItemDTO
      * @return
      */
@@ -174,6 +176,7 @@ public class ItemService {
 
     /**
      * 비활성화 처리
+     *
      * @param deactivateItemDTO
      * @return
      */
@@ -198,6 +201,7 @@ public class ItemService {
 
     /**
      * 판매가격 조회
+     *
      * @param item
      * @param buyer
      * @return
@@ -208,7 +212,7 @@ public class ItemService {
                 .map(i -> {
                     SearchItemDTO searchItem = itemRepository.searchItem(i.getItemcd());
                     String buyernm = buyerRepository.searchBuyer(i.getBuyercd());
-                    return  entityToDto(i, searchItem, buyernm);
+                    return entityToDto(i, searchItem, buyernm);
                 })
                 .collect(Collectors.toList());
         return result;
@@ -216,6 +220,7 @@ public class ItemService {
 
     /**
      * 판매가격 비활성화 처리
+     *
      * @param deactivateItemPriceDTO
      * @return
      */
@@ -239,6 +244,7 @@ public class ItemService {
 
     /**
      * 판매부번 조회 dto 변경
+     *
      * @param item
      * @return
      */
@@ -258,6 +264,7 @@ public class ItemService {
 
     /**
      * 판매가격 조회 dto 변경
+     *
      * @param itemPrice
      * @param searchItem
      * @param buyernm
