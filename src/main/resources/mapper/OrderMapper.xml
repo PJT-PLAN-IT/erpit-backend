@@ -5,18 +5,25 @@
 <mapper namespace="com.pjt.erpit.biz.mapper.OrderMapper">
     <!-- 오더 리스트 조회 -->
     <select id="getOrderList" parameterType="com.pjt.erpit.biz.dto.Order.OrderListDTO$Request" resultType="com.pjt.erpit.biz.dto.Order.OrderListDTO$Response">
-        SELECT *
+        SELECT MO.orderid orderid,
+               MO.orderno orderno,
+               DATE_FORMAT(MO.ORDERDATE,'%Y-%m-%d') AS orderdate,
+               MO.usercd usercd,
+               MU.usernm usernm,
+               MO.buyercd buyercode,
+               MB.buyernm buyernm,
+               MO.status status,
+               DATE_FORMAT(MO.adddate,'%Y-%m-%d') AS adddate,
+               DATE_FORMAT(MO.upddate,'%Y-%m-%d') AS requestdate
         FROM M_ORDER MO
-                 INNER JOIN M_USER MU
-                            ON MO.USERCD = MU.USERCD
-                 INNER JOIN M_BUYER MB
-                            ON MO.BUYERCD = MB.BUYERCD
-        WHERE MO.USERCD = ''
-          AND MO.BUYERCD = ''
-          AND MO.STATUS = ''
-          AND MO.ADDDATE BETWEEN '' AND ''
-          AND MU.USERNM = ''
-          AND MB.BUYERNM = ''
+        INNER JOIN M_USER MU
+                   ON MO.USERCD = MU.USERCD
+        INNER JOIN M_BUYER MB
+                   ON MO.BUYERCD = MB.BUYERCD
+        WHERE (MO.USERCD LIKE '%${user}%' OR MU.usernm LIKE '%${user}%')
+          AND (MO.BUYERCD LIKE '%${buyer}%' OR MB.BUYERNM LIKE '%${buyer}%')
+          AND MO.STATUS LIKE '%${status}%'
+          AND MO.ADDDATE BETWEEN #{startDate} AND #{endDate}
     </select>
 
     <!-- 오더 생성 -->
@@ -44,4 +51,49 @@
                 #{upduser},
                 #{upddate})
     </insert>
+
+    <!-- 오더 상세 조회 -->
+    <select id="getOrderDetail" parameterType="Long" resultType="com.pjt.erpit.biz.dto.Order.OrderDetailListDto$Response">
+        SELECT MO.ORDERID
+             , MO.ORDERNO
+             , DATE_FORMAT(MO.ORDERDATE,'%Y-%m-%d') AS orderdate
+             , MO.USERCD
+             , MO.BUYERCD
+             , MB.BUYERNM
+             , MO.STATUS
+             , MCC.CODENM  AS STATUSNM
+             , MO.REJECTCODE
+             , MCC2.CODENM AS REJECTCODENM
+             , MO.REJECTREASON
+             , DATE_FORMAT(MO.ADDDATE,'%Y-%m-%d') AS adddate
+        FROM M_ORDER MO
+                 INNER JOIN M_BUYER MB
+                            ON MO.BUYERCD = MB.BUYERCD
+                 LEFT JOIN M_COMMON_CODE MCC
+                           ON MO.STATUS = MCC.CODE
+                 LEFT JOIN M_COMMON_CODE MCC2
+                           ON MO.REJECTCODE = MCC2.CODE
+        WHERE MO.ORDERNO = #{orderno}
+    </select>
+
+    <!--오더 디테일 조회-->
+    <select id="getOrderItemList" parameterType="Long" resultType="com.pjt.erpit.biz.dto.Order.OrderDetailListDto$Detail">
+        SELECT moi.orderitemid,
+               moi.orderno,
+               moi.itemcd,
+               mi.itemnm,
+               moi.orderqty,
+               mi.originprice,
+               moi.ordersupplyprice,
+               moi.ordersurtax,
+               moi.ordersalesprice,
+               mi.stock,
+               mi.unit,
+               DATE_FORMAT(moi.deliverydate,'%Y-%m-%d') AS deliverydate
+        FROM M_ORDER_ITEM moi
+                 INNER JOIN M_ITEM mi
+                            ON moi.itemcd = mi.itemcd
+        WHERE moi.orderno = #{orderno}
+    </select>
+
 </mapper>

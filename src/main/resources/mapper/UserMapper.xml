@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--suppress SqlNoDataSourceInspection -->
+<!-- 직원 관련 Mapper -->
+<mapper namespace="com.pjt.erpit.biz.mapper.UserMapper">
+    <!-- 직원 리스트 조회 -->
+    <select id="getUserList" parameterType="String" resultType="com.pjt.erpit.biz.dto.user.UserListDto$Response">
+        SELECT MU.USERID userid
+             ,MU.USERCD usercd
+             ,MU.USERNM usernm
+             , DATE_FORMAT(MU.BIRTHDATE,'%Y-%m-%d') AS birthdate
+             , DATE_FORMAT(MU.JOINDATE,'%Y-%m-%d') AS joindate
+             ,MA.AUTH auth
+             , DATE_FORMAT(MU.ADDDATE,'%Y-%m-%d') AS adddate
+        FROM M_USER MU
+                 INNER JOIN M_AUTH MA
+                            ON MU.USERCD = MA.USERCD
+        WHERE MU.usercd like '%${user}%' OR MU.usernm like '%${user}%';
+    </select>
+</mapper>
