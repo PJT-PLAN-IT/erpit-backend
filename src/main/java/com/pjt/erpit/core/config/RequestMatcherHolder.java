@@ -21,14 +21,22 @@ public class RequestMatcherHolder {
             "/api/order/**",
             "/api/report",
             "/api/report/**",
-            "/api/user",
-            "/api/user/**"
+            "/api/buyer/list",
+            "/api/user/list",
+            "/api/item/list",
+            "/api/item/price/list"
     );
     private final List<String> PERMIT_ADMIN_URLS = List.of(
+            "/api/report",
+            "/api/report/**",
             "/api/admin",
             "/api/admin/**",
+            "/api/order",
+            "/api/order/**",
             "/api/buyer",
             "/api/buyer/**",
+            "/api/user",
+            "/api/user/**",
             "/api/item",
             "/api/item/**"
     );
