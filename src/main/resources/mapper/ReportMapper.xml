@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--suppress SqlNoDataSourceInspection -->
+<!-- 리포트 관련 Mapper -->
+<mapper namespace="com.pjt.erpit.biz.mapper.ReportMapper">
+    <!-- 월별 top10User -->
+    <select id="top10Users" resultType="com.pjt.erpit.biz.dto.Report.ReportDTO$TopUserDto">
+        SELECT SUM(oi.ordersalesprice * oi.orderqty) AS userSales,
+               o.usercd AS userCd,
+               u.usernm AS userNm
+        FROM M_ORDER_ITEM oi
+                INNER JOIN M_ORDER o ON oi.orderno = o.orderno
+                INNER JOIN M_USER u ON o.usercd = u.usercd
+        WHERE MONTH(o.orderdate) = #{month}
+          AND o.status = 'APRV_CMPT'
+        GROUP BY o.usercd, u.usernm
+        ORDER BY userSales
+        DESC LIMIT 10
+    </select>
+
+    <!-- 월별 top10Buyer -->
+    <select id="top10Buyers" resultType="com.pjt.erpit.biz.dto.Report.ReportDTO$TopBuyerDto">
+        SELECT SUM(oi.ordersalesprice * oi.orderqty) AS buyerSales,
+               o.buyercd AS buyerCd,
+               b.buyernm AS buyerNm
+        FROM M_ORDER_ITEM oi
+                 INNER JOIN M_ORDER o ON oi.orderno = o.orderno
+                 INNER JOIN M_BUYER b ON o.buyercd = b.buyercd
+        WHERE MONTH(o.orderdate) = #{month}
+          AND o.status = 'APRV_CMPT'
+        GROUP BY o.buyercd, b.buyernm
+        ORDER BY buyerSales
+        DESC LIMIT 10
+    </select>
+</mapper>

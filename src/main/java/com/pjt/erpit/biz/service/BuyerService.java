@@ -102,16 +102,14 @@ public class BuyerService {
      */
     @Transactional
     public ResponseResult<?> updateBuyer(UpdateBuyerDTO updateBuyerDTO) {
-        Optional<Buyer> buyerId = buyerRepository.findById(updateBuyerDTO.getBuyerId());
-        if (buyerId.isPresent()) {
-            Buyer buyer = buyerId.get();
-            buyer.updateBuyer(updateBuyerDTO);
-        }
+        Buyer buyer = updateBuyerDTO.toEntity();
+        buyerRepository.save(buyer);
         return ResponseResult.ofSuccess("success", null);
     }
 
     /**
      * 바이어 조회 dto 변경
+     *
      * @param buyer
      * @return
      */

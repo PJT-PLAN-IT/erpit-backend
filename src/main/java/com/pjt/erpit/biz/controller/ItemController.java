@@ -1,7 +1,6 @@
 package com.pjt.erpit.biz.controller;
 
-import com.pjt.erpit.biz.dto.item.CreateItemDTO;
-import com.pjt.erpit.biz.dto.item.CreateItemPriceDTO;
+import com.pjt.erpit.biz.dto.item.*;
 import com.pjt.erpit.biz.service.ItemService;
 import com.pjt.erpit.core.config.ResponseResult;
 import jakarta.servlet.http.HttpServletRequest;
@@ -57,5 +56,58 @@ public class ItemController {
     @PostMapping("/price")
     public ResponseResult<?> createItemPrice(HttpServletRequest request, @Valid @RequestBody List<CreateItemPriceDTO.Request> createItemPriceDTOList) {
         return itemService.createItemPrice(request, createItemPriceDTOList);
+    }
+
+    /**
+     * 판매부번 조회
+     * @param item
+     * @return
+     */
+    @GetMapping("/list")
+    public ResponseResult<?> itemList(@Valid @RequestParam String item) {
+        List<ItemListDTO> result = itemService.itemList(item);
+        return ResponseResult.ofSuccess("success", result);
+    }
+
+    /**
+     * 판매부번 수정
+     * @param updateItemDTO
+     * @return
+     */
+    @PutMapping
+    public ResponseResult<?> updateItem(HttpServletRequest request,@RequestBody UpdateItemDTO updateItemDTO) {
+        return itemService.updateItem(request, updateItemDTO);
+    }
+
+    /**
+     * 판배부번 비활성화 처리
+     * @param deactivateItemDTO
+     * @return
+     */
+    @PutMapping("/deactivate")
+    public ResponseResult<?> deactivateItem(@RequestBody DeactivateItemDTO deactivateItemDTO) {
+        return itemService.deactivateItem(deactivateItemDTO);
+    }
+
+    /**
+     * 판매가격 조회
+     * @param item
+     * @param buyer
+     * @return
+     */
+    @GetMapping("/price/list")
+    public ResponseResult<?> itemPriceList(@Valid @RequestParam String item, @RequestParam String buyer) {
+        List<ItemPriceListDTO> result = itemService.itemPriceList(item, buyer);
+        return ResponseResult.ofSuccess("success", result);
+    }
+
+    /**
+     * 판매가격 비활성화 처리
+     * @param deactivateItemPriceDTO
+     * @return
+     */
+    @PutMapping("/price/deactivate")
+    public ResponseResult<?> deactivateItemPrice(@RequestBody DeactivateItemPriceDTO deactivateItemPriceDTO) {
+        return itemService.deactivateItemPrice(deactivateItemPriceDTO);
     }
 }

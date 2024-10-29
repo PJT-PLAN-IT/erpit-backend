@@ -1,8 +1,6 @@
 package com.pjt.erpit.biz.service;
 
-import com.pjt.erpit.biz.dto.item.CheckDuplicationDTO;
-import com.pjt.erpit.biz.dto.item.CreateItemDTO;
-import com.pjt.erpit.biz.dto.item.CreateItemPriceDTO;
+import com.pjt.erpit.biz.dto.item.*;
 import com.pjt.erpit.biz.entity.Item;
 import com.pjt.erpit.biz.entity.ItemPrice;
 import com.pjt.erpit.biz.entity.history.ItemHistory;
@@ -18,8 +16,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * 판매부번 관련 Service
@@ -27,6 +28,7 @@ import java.util.List;
 @SuppressWarnings({"CallToPrintStackTrace", "SpellCheckingInspection", "ExtractMethodRecommender"})
 @Slf4j
 @Service
+@Transactional(readOnly = true)
 public class ItemService {
     private final BuyerRepository buyerRepository;
     private final ItemRepository itemRepository;
@@ -134,5 +136,148 @@ public class ItemService {
         }
 
         return ResponseResult.ofSuccess("success", null);
+    }
+
+    /**
+     * 판매부번 조회
+     * @param item
+     * @return
+     */
+    public List<ItemListDTO> itemList(String item) {
+        List<Item> itemList = itemRepository.findByItemcdOrItemnm(item);
+        List<ItemListDTO> result = itemList.stream()
+                .map(i -> {
+                    ItemListDTO dto = entityToDto(i);
+                    return dto;
+                })
+                .toList();
+        return result;
+    }
+
+    /**
+     * 판매부번 수정
+     * @param updateItemDTO
+     * @return
+     */
+    @Transactional
+    public ResponseResult<?> updateItem(HttpServletRequest request, UpdateItemDTO updateItemDTO) {
+        String ip = request.getRemoteAddr();
+
+        Item item = updateItemDTO.toEntity();
+        itemRepository.save(item);
+
+        ItemHistory itemHistory = itemConvert.toItemHistory(item);
+        itemHistoryRepository.save(itemHistory);
+
+        return ResponseResult.ofSuccess("success", null);
+    }
+
+    /**
+     * 비활성화 처리
+     * @param deactivateItemDTO
+     * @return
+     */
+    @Transactional
+    public ResponseResult<?> deactivateItem(DeactivateItemDTO deactivateItemDTO) {
+        Optional<Item> id = itemRepository.findById(deactivateItemDTO.getItemId());
+        if (id.isPresent()) {
+            Item item = Item.builder()
+                    .itemid(deactivateItemDTO.getItemId())
+                    .itemcd(id.get().getItemcd())
+                    .itemnm(id.get().getItemnm())
+                    .originprice(id.get().getOriginprice())
+                    .supplyprice(id.get().getSupplyprice())
+                    .stock(id.get().getStock())
+                    .unit(id.get().getUnit())
+                    .useyn(deactivateItemDTO.getUseYn())
+                    .build();
+            itemRepository.save(item);
+        }
+        return ResponseResult.ofSuccess("success", null);
+    }
+
+    /**
+     * 판매가격 조회
+     * @param item
+     * @param buyer
+     * @return
+     */
+    public List<ItemPriceListDTO> itemPriceList(String item, String buyer) {
+        List<ItemPrice> itemPriceList = itemPriceRepository.searchItemPrice(item, buyer);
+        List<ItemPriceListDTO> result = itemPriceList.stream()
+                .map(i -> {
+                    SearchItemDTO searchItem = itemRepository.searchItem(i.getItemcd());
+                    String buyernm = buyerRepository.searchBuyer(i.getBuyercd());
+                    return  entityToDto(i, searchItem, buyernm);
+                })
+                .collect(Collectors.toList());
+        return result;
+    }
+
+    /**
+     * 판매가격 비활성화 처리
+     * @param deactivateItemPriceDTO
+     * @return
+     */
+    @Transactional
+    public ResponseResult<?> deactivateItemPrice(DeactivateItemPriceDTO deactivateItemPriceDTO) {
+        Optional<ItemPrice> id = itemPriceRepository.findById(deactivateItemPriceDTO.getItemPriceId());
+        if (id.isPresent()) {
+            ItemPrice itemPrice = ItemPrice.builder()
+                    .itempriceid(deactivateItemPriceDTO.getItemPriceId())
+                    .buyercd(id.get().getBuyercd())
+                    .itemcd(id.get().getItemcd())
+                    .buyersupplyprice(id.get().getBuyersupplyprice())
+                    .surtax(id.get().getSurtax())
+                    .salesprice(id.get().getSalesprice())
+                    .useyn(deactivateItemPriceDTO.getUseYn())
+                    .build();
+            itemPriceRepository.save(itemPrice);
+        }
+        return ResponseResult.ofSuccess("success", null);
+    }
+
+    /**
+     * 판매부번 조회 dto 변경
+     * @param item
+     * @return
+     */
+    private ItemListDTO entityToDto(Item item) {
+        return ItemListDTO.builder()
+                .itemId(item.getItemid())
+                .itemCd(item.getItemcd())
+                .itemNm(item.getItemnm())
+                .originPrice(item.getOriginprice())
+                .supplyPrice(item.getSupplyprice())
+                .unit(item.getUnit())
+                .stock(item.getStock())
+                .useYn(item.getUseyn())
+                .addDate(item.getAdddate().format(DateTimeFormatter.ofPattern("yyyy.MM.dd")))
+                .build();
+    }
+
+    /**
+     * 판매가격 조회 dto 변경
+     * @param itemPrice
+     * @param searchItem
+     * @param buyernm
+     * @return
+     */
+    private ItemPriceListDTO entityToDto(ItemPrice itemPrice, SearchItemDTO searchItem, String buyernm) {
+
+        return ItemPriceListDTO.builder()
+                .itemPriceId(itemPrice.getItempriceid())
+                .buyerCd(itemPrice.getBuyercd())
+                .buyerNm(buyernm)
+                .itemCd(itemPrice.getItemcd())
+                .itemNm(searchItem.getItemNm())
+                .originPrice(searchItem.getOriginPrice())
+                .buyerSupplyPrice(itemPrice.getBuyersupplyprice())
+                .surtax(itemPrice.getSurtax())
+                .salesPrice(itemPrice.getSalesprice())
+                .unit(searchItem.getUnit())
+                .addDate(itemPrice.getAdddate().format(DateTimeFormatter.ofPattern("yyyy.MM.dd")))
+                .useYn(itemPrice.getUseyn())
+                .build();
     }
 }
