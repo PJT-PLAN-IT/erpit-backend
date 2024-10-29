@@ -17,4 +17,17 @@
                             ON MU.USERCD = MA.USERCD
         WHERE MU.usercd like '%${user}%' OR MU.usernm like '%${user}%';
     </select>
+
+    <select id="getAllUser" parameterType="String" resultType="com.pjt.erpit.biz.dto.user.UserListDto$Response">
+        SELECT MU.USERID userid
+             ,MU.USERCD usercd
+             ,MU.USERNM usernm
+             , DATE_FORMAT(MU.BIRTHDATE,'%Y-%m-%d') AS birthdate
+             , DATE_FORMAT(MU.JOINDATE,'%Y-%m-%d') AS joindate
+             ,MA.AUTH auth
+             , DATE_FORMAT(MU.ADDDATE,'%Y-%m-%d') AS adddate
+        FROM M_USER MU
+                 INNER JOIN M_AUTH MA
+                            ON MU.USERCD = MA.USERCD
+    </select>
 </mapper>

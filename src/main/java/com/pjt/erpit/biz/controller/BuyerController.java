@@ -53,7 +53,7 @@ public class BuyerController {
      * @return
      */
     @GetMapping("/list")
-    public ResponseResult<?> buyerList(@Valid @RequestParam String buyer) {
+    public ResponseResult<?> buyerList(@RequestParam(required = false) String buyer) {
         List<BuyerListDTO> result = buyerService.buyerList(buyer);
         return ResponseResult.ofSuccess("success", result);
     }

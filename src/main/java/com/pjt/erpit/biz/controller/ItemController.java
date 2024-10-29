@@ -64,7 +64,7 @@ public class ItemController {
      * @return
      */
     @GetMapping("/list")
-    public ResponseResult<?> itemList(@Valid @RequestParam String item) {
+    public ResponseResult<?> itemList(@RequestParam(required = false) String item) {
         List<ItemListDTO> result = itemService.itemList(item);
         return ResponseResult.ofSuccess("success", result);
     }
@@ -96,7 +96,7 @@ public class ItemController {
      * @return
      */
     @GetMapping("/price/list")
-    public ResponseResult<?> itemPriceList(@Valid @RequestParam String item, @RequestParam String buyer) {
+    public ResponseResult<?> itemPriceList(@RequestParam(required = false) String item, @RequestParam(required = false) String buyer) {
         List<ItemPriceListDTO> result = itemService.itemPriceList(item, buyer);
         return ResponseResult.ofSuccess("success", result);
     }

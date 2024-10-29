@@ -80,7 +80,12 @@ public class UserService {
      * @return List
      */
     public List<UserListDto.Response> getUserList(String user) {
-        List<UserListDto.Response> userList = userMapper.getUserList(user);
+        List<UserListDto.Response> userList;
+        if(user==null || user.isEmpty()){
+            userList = userMapper.getAllUser(user);
+        }else{
+            userList = userMapper.getUserList(user);
+        }
         return userList;
     }
 

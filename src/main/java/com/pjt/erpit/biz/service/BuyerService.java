@@ -15,7 +15,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.Optional;
 
 /**
  * 바이어 관련 Service
@@ -81,11 +80,19 @@ public class BuyerService {
 
     /**
      * 바이어 조회
+     *
      * @param buyer
      * @return
      */
     public List<BuyerListDTO> buyerList(String buyer) {
-        List<Buyer> buyerlist = buyerRepository.findByBuyercdOrBuyernm(buyer);
+        List<Buyer> buyerlist;
+
+        if (buyer == null || buyer.isEmpty()) {
+            buyerlist = buyerRepository.findAll();
+        } else {
+            buyerlist = buyerRepository.findByBuyercdOrBuyernm(buyer);
+        }
+
         List<BuyerListDTO> result = buyerlist.stream()
                 .map(b -> {
                     BuyerListDTO dto = entityToDto(b);
@@ -97,6 +104,7 @@ public class BuyerService {
 
     /**
      * 바이어 수정
+     *
      * @param updateBuyerDTO
      * @return
      */

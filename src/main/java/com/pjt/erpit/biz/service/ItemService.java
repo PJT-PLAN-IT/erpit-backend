@@ -148,7 +148,12 @@ public class ItemService {
      * @return
      */
     public List<ItemListDTO> itemList(String item) {
-        List<Item> itemList = itemRepository.findByItemcdOrItemnm(item);
+        List<Item> itemList;
+        if(item == null || item.isEmpty()) {
+            itemList = itemRepository.findAll();
+        }else{
+            itemList = itemRepository.findByItemcdOrItemnm(item);
+        }
         List<ItemListDTO> result = itemList.stream()
                 .map(i -> {
                     ItemListDTO dto = entityToDto(i);

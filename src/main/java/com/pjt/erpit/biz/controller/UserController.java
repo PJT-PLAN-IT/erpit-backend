@@ -36,7 +36,7 @@ public class UserController {
     }
 
     @GetMapping("/list")
-    public ResponseResult<?> userList(@RequestParam String user) {
+    public ResponseResult<?> userList(@RequestParam(required = false) String user) {
         return ResponseResult.ofSuccess("success", userService.getUserList(user));
     }
 

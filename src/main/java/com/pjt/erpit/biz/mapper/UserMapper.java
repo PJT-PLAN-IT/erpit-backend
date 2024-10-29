@@ -16,5 +16,6 @@ import java.util.List;
 public interface UserMapper {
 
     List<UserListDto.Response> getUserList(String user);
-    
+
+    List<UserListDto.Response> getAllUser(String user);
 }
