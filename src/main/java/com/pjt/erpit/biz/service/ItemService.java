@@ -165,11 +165,7 @@ public class ItemService {
     public ResponseResult<?> updateItem(HttpServletRequest request, UpdateItemDTO updateItemDTO) {
         String ip = request.getRemoteAddr();
 
-        Item item = updateItemDTO.toEntity(ip);
-        itemRepository.save(item);
-
-        ItemHistory itemHistory = itemConvert.toItemHistory(item);
-        itemHistoryRepository.save(itemHistory);
+        
 
         return ResponseResult.ofSuccess("success", null);
     }

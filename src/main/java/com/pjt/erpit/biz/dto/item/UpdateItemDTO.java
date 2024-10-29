@@ -35,8 +35,8 @@ public class UpdateItemDTO {
     @NotNull
     private String useYn;
 
-    public Item toEntity(String ip) {
-        Item item = Item.builder()
+    public Item toEntity(Item item1,  String ip) {
+        Item item = item1.builder()
                 .itemid(itemId)
                 .itemcd(itemCd)
                 .itemnm(itemNm)
@@ -47,6 +47,9 @@ public class UpdateItemDTO {
                 .useyn(useYn)
                 .build();
         item.setUpdipaddr(ip);
+        item.setUpduser(item1.getUpduser());
+        item.setAdduser(item1.getAdduser());
+        item.setAddipaddr(item1.getAddipaddr());
 
         return item;
     }
