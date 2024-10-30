@@ -8,6 +8,7 @@ import com.pjt.erpit.biz.entity.Buyer;
 import com.pjt.erpit.biz.repository.BuyerRepository;
 import com.pjt.erpit.core.config.ResponseResult;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -50,7 +51,7 @@ public class BuyerService {
      * @return ResponseResult<?>
      */
     @Transactional
-    public ResponseResult<?> createBuyer(HttpServletRequest request, CreateBuyerDTO.Request createBuyerDTO) {
+    public ResponseResult<?> createBuyer(HttpServletRequest request, @Valid CreateBuyerDTO.Request createBuyerDTO) {
         if (buyerRepository.existsByBuyercd(createBuyerDTO.getBuyercd())) {
             return ResponseResult.ofFailure(HttpStatus.BAD_REQUEST, "is already exist");
         }
