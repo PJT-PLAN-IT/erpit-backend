@@ -123,14 +123,14 @@ public class BuyerService {
      */
     private BuyerListDTO entityToDto(Buyer buyer) {
         return BuyerListDTO.builder()
-                .buyerId(buyer.getBuyerid())
-                .buyerCd(buyer.getBuyercd())
-                .buyerNm(buyer.getBuyernm())
+                .buyerid(buyer.getBuyerid())
+                .buyercd(buyer.getBuyercd())
+                .buyernm(buyer.getBuyernm())
                 .tel(buyer.getTel())
                 .email(buyer.getEmail())
-                .zipCode(buyer.getZipcode())
+                .zipcode(buyer.getZipcode())
                 .address(buyer.getAddress() + buyer.getAddressdetail())
-                .addDate(buyer.getAdddate().format(DateTimeFormatter.ofPattern("yyyy.MM.dd")))
+                .adddate(buyer.getAdddate().format(DateTimeFormatter.ofPattern("yyyy.MM.dd")))
                 .build();
     }
 }

@@ -15,13 +15,13 @@ import lombok.*;
 public class UpdateBuyerDTO {
 
     @NotNull
-    private Long buyerId;
+    private Long buyerid;
 
     @NotNull
-    private String buyerCd;
+    private String buyercd;
 
     @NotNull
-    private String buyerNm;
+    private String buyernm;
 
     @NotNull
     private String tel;
@@ -36,18 +36,18 @@ public class UpdateBuyerDTO {
     private String address;
 
     @NotNull
-    private String addressDetail;
+    private String addressdetail;
 
     public Buyer toEntity() {
         return Buyer.builder()
-                .buyerid(buyerId)
-                .buyercd(buyerCd)
-                .buyernm(buyerNm)
+                .buyerid(buyerid)
+                .buyercd(buyercd)
+                .buyernm(buyernm)
                 .tel(tel)
                 .email(email)
                 .zipcode(zipcode)
                 .address(address)
-                .addressdetail(addressDetail)
+                .addressdetail(addressdetail)
                 .build();
     }
 }

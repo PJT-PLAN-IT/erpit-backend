@@ -69,7 +69,12 @@ public class OrderController {
         return orderService.updateOrder(request, updateOrderDto);
     }
 
-
+    /**
+     * 오더 삭제
+     * @param request
+     * @param orderno
+     * @return
+     */
     @DeleteMapping
     public ResponseResult<?> deleteOrder(HttpServletRequest request, @Valid @RequestParam Long orderno) {
         return orderService.deleteOrder(request, orderno);

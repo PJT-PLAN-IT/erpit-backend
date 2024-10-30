@@ -14,13 +14,13 @@ import lombok.*;
 public class BuyerListDTO {
 
     @NotNull
-    private Long buyerId;
+    private Long buyerid;
 
     @NotNull
-    private String buyerCd;
+    private String buyercd;
 
     @NotNull
-    private String buyerNm;
+    private String buyernm;
 
     @NotNull
     private String tel;
@@ -29,11 +29,11 @@ public class BuyerListDTO {
     private String email;
 
     @NotNull
-    private String zipCode;
+    private String zipcode;
 
     @NotNull
     private String address;
 
     @NotNull
-    private String addDate;
+    private String adddate;
 }
