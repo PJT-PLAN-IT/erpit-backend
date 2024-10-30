@@ -69,6 +69,14 @@ public class OrderController {
         return orderService.updateOrder(request, updateOrderDto);
     }
 
+
+    @DeleteMapping
+    public ResponseResult<?> deleteOrder(HttpServletRequest request, @Valid @RequestParam Long orderno) {
+        return orderService.deleteOrder(request, orderno);
+    }
+
+
+
     /**
      * 상태 변경
      * @param request p1

@@ -13,4 +13,6 @@ import java.util.List;
 @Repository
 public interface OrderItemRepository extends JpaRepository<OrderItem, Long> {
     List<OrderItem> findByOrderno(Long orderno);
+
+    void deleteAllByOrderno(Long orderno);
 }

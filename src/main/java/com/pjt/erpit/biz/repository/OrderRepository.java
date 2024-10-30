@@ -26,4 +26,6 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
     Boolean existsByOrderno(Long orderno);
 
     Order findByOrderno(Long orderno);
+
+    void deleteAllByOrderno(Long orderno);
 }

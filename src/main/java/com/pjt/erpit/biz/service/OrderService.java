@@ -143,7 +143,7 @@ public class OrderService {
      * @param orderListDTO
      * @return
      */
-    public ResponseResult<?> orderList(OrderListDTO.@Valid Request orderListDTO) {
+    public ResponseResult<?> orderList(OrderListDTO.Request orderListDTO) {
 
         YearMonth yearMonth = YearMonth.of(Integer.parseInt(orderListDTO.getYear()), Integer.parseInt(orderListDTO.getMonth()));
         LocalDateTime startDate = yearMonth.atDay(1).atStartOfDay();
@@ -163,7 +163,7 @@ public class OrderService {
      * @param orderno p1
      * @return OrderDetailListDto.Response
      */
-    public OrderDetailListDto.Response getOrderDetailList(@Valid Long orderno) {
+    public OrderDetailListDto.Response getOrderDetailList(Long orderno) {
         OrderDetailListDto.Response orderDetail = orderMapper.getOrderDetail(orderno);
         List<OrderDetailListDto.Detail> itemList = orderMapper.getOrderItemList(orderno);
         orderDetail.setItemList(itemList);
@@ -289,6 +289,39 @@ public class OrderService {
             log.debug(e.getMessage());
             return ResponseResult.ofFailure(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
         }
+
+        return ResponseResult.ofSuccess("success", null);
+    }
+
+    @Transactional
+    public ResponseResult<?> deleteOrder(HttpServletRequest request, Long orderno) {
+        String ip = request.getRemoteAddr();
+        if(orderno == null){
+            return ResponseResult.ofFailure(HttpStatus.BAD_REQUEST, "empty orderno");
+        }
+        Order order = orderRepository.findByOrderno(orderno);
+        if(order == null){
+            return ResponseResult.ofFailure(HttpStatus.BAD_REQUEST, "order not found");
+        }
+        if(!order.getStatus().equals("CREATE")){
+            return ResponseResult.ofFailure(HttpStatus.BAD_REQUEST, "order not create");
+        }
+
+        order.setStatus("DELETE");
+        order.setUpdipaddr(ip);
+        OrderHistory orderHistory = orderConvert.toOrderHistory(order);
+
+        try {
+            orderHistoryRepository.save(orderHistory);
+        } catch (Exception e) {
+            e.printStackTrace();
+            log.debug(e.getMessage());
+            return ResponseResult.ofFailure(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
+        }
+
+
+        orderItemRepository.deleteAllByOrderno(orderno);
+        orderRepository.deleteAllByOrderno(orderno);
 
         return ResponseResult.ofSuccess("success", null);
     }
