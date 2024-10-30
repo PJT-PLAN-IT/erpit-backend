@@ -129,7 +129,8 @@ public class BuyerService {
                 .tel(buyer.getTel())
                 .email(buyer.getEmail())
                 .zipcode(buyer.getZipcode())
-                .address(buyer.getAddress() + buyer.getAddressdetail())
+                .address(buyer.getAddress())
+                .addressdetail(buyer.getAddressdetail())
                 .adddate(buyer.getAdddate().format(DateTimeFormatter.ofPattern("yyyy.MM.dd")))
                 .build();
     }

@@ -35,5 +35,8 @@ public class BuyerListDTO {
     private String address;
 
     @NotNull
+    private String addressdetail;
+
+    @NotNull
     private String adddate;
 }
