@@ -147,7 +147,7 @@ public class ItemService {
     public List<ItemListDTO> itemList(String item) {
         List<Item> itemList;
         if (item == null || item.isEmpty()) {
-            itemList = itemRepository.findAll();
+            itemList = itemRepository.findAllbyItem();
         } else {
             itemList = itemRepository.findByItemcdOrItemnm(item);
         }

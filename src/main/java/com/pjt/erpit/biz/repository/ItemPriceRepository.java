@@ -17,6 +17,7 @@ public interface ItemPriceRepository extends JpaRepository<ItemPrice, Long> {
 
     @Query("SELECT ip FROM M_ITEM_PRICE ip " +
             "WHERE (LOWER(:item) IS NULL OR LOWER(:item) = '' OR LOWER(ip.itemcd) LIKE LOWER(CONCAT('%', :item, '%'))) " +
-            "AND (LOWER(:buyer) IS NULL OR LOWER(:buyer) = '' OR LOWER(ip.buyercd) LIKE LOWER(CONCAT('%', :buyer, '%')))")
+            "AND (LOWER(:buyer) IS NULL OR LOWER(:buyer) = '' OR LOWER(ip.buyercd) LIKE LOWER(CONCAT('%', :buyer, '%'))) " +
+            "AND ip.useyn = 'Y'")
     List<ItemPrice> searchItemPrice(@Param("item") String item, @Param("buyer") String buyer);
 }

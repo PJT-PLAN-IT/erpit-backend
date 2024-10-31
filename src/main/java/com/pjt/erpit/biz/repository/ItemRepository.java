@@ -21,7 +21,7 @@ public interface ItemRepository extends JpaRepository<Item, Long> {
     Item findByItemcd(String itemcd);
 
     @Query("SELECT i FROM M_ITEM  i WHERE LOWER(i.itemcd) LIKE LOWER(CONCAT('%', :item, '%')) " +
-            "OR LOWER(i.itemnm) LIKE LOWER(CONCAT('%', :item, '%'))")
+            "OR LOWER(i.itemnm) LIKE LOWER(CONCAT('%', :item, '%')) AND i.useyn = 'Y'")
     List<Item> findByItemcdOrItemnm(@Param("item") String item);
 
     @Query("SELECT new com.pjt.erpit.biz.dto.item.SearchItemDTO(i.itemnm, i.originprice, i.unit, i.stock) FROM M_ITEM i WHERE i.itemcd = :itemcd")
@@ -31,4 +31,7 @@ public interface ItemRepository extends JpaRepository<Item, Long> {
     String findByItemnm(@Param("itemcd") String itemcd);
 
     Item findByItemid(@NotNull Long itemId);
+
+    @Query("SELECT i FROM M_ITEM i WHERE i.useyn = 'Y'")
+    List<Item> findAllbyItem();
 }
