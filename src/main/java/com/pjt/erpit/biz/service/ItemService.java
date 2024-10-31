@@ -3,16 +3,13 @@ package com.pjt.erpit.biz.service;
 import com.pjt.erpit.biz.dto.item.*;
 import com.pjt.erpit.biz.entity.Item;
 import com.pjt.erpit.biz.entity.ItemPrice;
-import com.pjt.erpit.biz.entity.Order;
 import com.pjt.erpit.biz.entity.history.ItemHistory;
-import com.pjt.erpit.biz.entity.history.OrderHistory;
 import com.pjt.erpit.biz.entity.history.convert.ItemConvert;
 import com.pjt.erpit.biz.repository.BuyerRepository;
 import com.pjt.erpit.biz.repository.ItemHistoryRepository;
 import com.pjt.erpit.biz.repository.ItemPriceRepository;
 import com.pjt.erpit.biz.repository.ItemRepository;
 import com.pjt.erpit.core.config.ResponseResult;
-import com.pjt.erpit.core.util.DateUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -149,9 +146,9 @@ public class ItemService {
      */
     public List<ItemListDTO> itemList(String item) {
         List<Item> itemList;
-        if(item == null || item.isEmpty()) {
+        if (item == null || item.isEmpty()) {
             itemList = itemRepository.findAll();
-        }else{
+        } else {
             itemList = itemRepository.findByItemcdOrItemnm(item);
         }
         List<ItemListDTO> result = itemList.stream()
@@ -172,7 +169,6 @@ public class ItemService {
     @Transactional
     public ResponseResult<?> updateItem(HttpServletRequest request, UpdateItemDTO updateItemDTO) {
         String ip = request.getRemoteAddr();
-
 
         Item item = itemRepository.findByItemid(updateItemDTO.getItemid());
         item.setItemnm(updateItemDTO.getItemnm());
@@ -195,13 +191,6 @@ public class ItemService {
             log.debug(e.getMessage());
             return ResponseResult.ofFailure(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
         }
-
-
-//        Item item = updateItemDTO.toEntity();
-//        itemRepository.save(item);
-//
-//        ItemHistory itemHistory = itemConvert.toItemHistory(item);
-//        itemHistoryRepository.save(itemHistory);
 
         return ResponseResult.ofSuccess("success", null);
     }
@@ -317,6 +306,7 @@ public class ItemService {
                 .unit(searchItem.getUnit())
                 .adddate(itemPrice.getAdddate().format(DateTimeFormatter.ofPattern("yyyy.MM.dd")))
                 .useyn(itemPrice.getUseyn())
+                .stock(searchItem.getStock())
                 .build();
     }
 }

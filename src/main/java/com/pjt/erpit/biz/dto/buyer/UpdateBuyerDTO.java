@@ -38,16 +38,4 @@ public class UpdateBuyerDTO {
     @NotNull
     private String addressdetail;
 
-    public Buyer toEntity() {
-        return Buyer.builder()
-                .buyerid(buyerid)
-                .buyercd(buyercd)
-                .buyernm(buyernm)
-                .tel(tel)
-                .email(email)
-                .zipcode(zipcode)
-                .address(address)
-                .addressdetail(addressdetail)
-                .build();
-    }
 }
