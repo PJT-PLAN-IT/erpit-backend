@@ -29,6 +29,8 @@ public class ItemPriceListDTO {
 
     private String unit;
 
+    private Integer stock;
+
     private String addDate;
 
     private String useYn;

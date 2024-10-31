@@ -24,7 +24,7 @@ public interface ItemRepository extends JpaRepository<Item, Long> {
             "OR LOWER(i.itemnm) LIKE LOWER(CONCAT('%', :item, '%'))")
     List<Item> findByItemcdOrItemnm(@Param("item") String item);
 
-    @Query("SELECT new com.pjt.erpit.biz.dto.item.SearchItemDTO(i.itemnm, i.originprice, i.unit) FROM M_ITEM i WHERE i.itemcd = :itemcd")
+    @Query("SELECT new com.pjt.erpit.biz.dto.item.SearchItemDTO(i.itemnm, i.originprice, i.unit, i.stock) FROM M_ITEM i WHERE i.itemcd = :itemcd")
     SearchItemDTO searchItem(@Param("itemcd") String itemcd);
 
     @Query("SELECT i.itemnm FROM M_ITEM i WHERE i.itemcd = :itemcd")

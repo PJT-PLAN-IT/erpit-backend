@@ -173,7 +173,6 @@ public class ItemService {
     public ResponseResult<?> updateItem(HttpServletRequest request, UpdateItemDTO updateItemDTO) {
         String ip = request.getRemoteAddr();
 
-
         Item item = itemRepository.findByItemid(updateItemDTO.getItemId());
         item.setItemnm(updateItemDTO.getItemNm());
         item.setOriginprice(updateItemDTO.getOriginPrice());
@@ -195,13 +194,6 @@ public class ItemService {
             log.debug(e.getMessage());
             return ResponseResult.ofFailure(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
         }
-
-
-//        Item item = updateItemDTO.toEntity();
-//        itemRepository.save(item);
-//
-//        ItemHistory itemHistory = itemConvert.toItemHistory(item);
-//        itemHistoryRepository.save(itemHistory);
 
         return ResponseResult.ofSuccess("success", null);
     }
@@ -315,6 +307,7 @@ public class ItemService {
                 .surtax(itemPrice.getSurtax())
                 .salesPrice(itemPrice.getSalesprice())
                 .unit(searchItem.getUnit())
+                .stock(searchItem.getStock())
                 .addDate(itemPrice.getAdddate().format(DateTimeFormatter.ofPattern("yyyy.MM.dd")))
                 .useYn(itemPrice.getUseyn())
                 .build();

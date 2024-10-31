@@ -7,6 +7,7 @@ import com.pjt.erpit.biz.dto.buyer.UpdateBuyerDTO;
 import com.pjt.erpit.biz.entity.Buyer;
 import com.pjt.erpit.biz.repository.BuyerRepository;
 import com.pjt.erpit.core.config.ResponseResult;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
@@ -16,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * 바이어 관련 Service
@@ -111,8 +113,12 @@ public class BuyerService {
      */
     @Transactional
     public ResponseResult<?> updateBuyer(UpdateBuyerDTO updateBuyerDTO) {
-        Buyer buyer = updateBuyerDTO.toEntity();
-        buyerRepository.save(buyer);
+        Buyer buyer = buyerRepository.findById(updateBuyerDTO.getBuyerid())
+                .orElseThrow(() -> new EntityNotFoundException("Buyer not found"));
+
+        Buyer entity = toEntity(buyer, updateBuyerDTO);
+        buyerRepository.save(entity);
+
         return ResponseResult.ofSuccess("success", null);
     }
 
@@ -133,6 +139,25 @@ public class BuyerService {
                 .address(buyer.getAddress())
                 .addressdetail(buyer.getAddressdetail())
                 .adddate(buyer.getAdddate().format(DateTimeFormatter.ofPattern("yyyy.MM.dd")))
+                .build();
+    }
+
+    /**
+     * 바이어 수정
+     * @param buyer
+     * @param updateBuyerDTO
+     * @return
+     */
+    private Buyer toEntity(Buyer buyer, UpdateBuyerDTO updateBuyerDTO) {
+        return Buyer.builder()
+                .buyerid(buyer.getBuyerid())
+                .buyercd(updateBuyerDTO.getBuyercd())
+                .buyernm(updateBuyerDTO.getBuyernm())
+                .tel(updateBuyerDTO.getTel())
+                .email(updateBuyerDTO.getEmail())
+                .zipcode(updateBuyerDTO.getZipcode())
+                .address(updateBuyerDTO.getAddress())
+                .addressdetail(updateBuyerDTO.getAddressdetail())
                 .build();
     }
 }
