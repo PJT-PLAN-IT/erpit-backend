@@ -30,7 +30,7 @@ public class ItemController {
      * @return ResponseResult<?>
      */
     @GetMapping("/check")
-    public ResponseResult<?> checkDuplication(@RequestParam String itemcd) {
+    public ResponseResult<?> checkDuplication(@Valid @RequestParam String itemcd) {
         return ResponseResult.ofSuccess("success", itemService.checkDuplication(itemcd));
     }
 

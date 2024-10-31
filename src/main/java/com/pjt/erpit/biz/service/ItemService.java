@@ -174,17 +174,17 @@ public class ItemService {
         String ip = request.getRemoteAddr();
 
 
-        Item item = itemRepository.findByItemid(updateItemDTO.getItemId());
-        item.setItemnm(updateItemDTO.getItemNm());
-        item.setOriginprice(updateItemDTO.getOriginPrice());
-        item.setSupplyprice(updateItemDTO.getSupplyPrice());
+        Item item = itemRepository.findByItemid(updateItemDTO.getItemid());
+        item.setItemnm(updateItemDTO.getItemnm());
+        item.setOriginprice(updateItemDTO.getOriginprice());
+        item.setSupplyprice(updateItemDTO.getSupplyprice());
         item.setStock(updateItemDTO.getStock());
         item.setUnit(updateItemDTO.getUnit());
-        item.setUseyn(updateItemDTO.getUseYn());
+        item.setUseyn(updateItemDTO.getUseyn());
         item.setAddipaddr(ip);
 
         itemRepository.save(item);
-        item = itemRepository.findByItemid(updateItemDTO.getItemId());
+        item = itemRepository.findByItemid(updateItemDTO.getItemid());
 
         ItemHistory itemHistory = itemConvert.toItemHistory(item);
 
@@ -214,17 +214,17 @@ public class ItemService {
      */
     @Transactional
     public ResponseResult<?> deactivateItem(DeactivateItemDTO deactivateItemDTO) {
-        Optional<Item> id = itemRepository.findById(deactivateItemDTO.getItemId());
+        Optional<Item> id = itemRepository.findById(deactivateItemDTO.getItemid());
         if (id.isPresent()) {
             Item item = Item.builder()
-                    .itemid(deactivateItemDTO.getItemId())
+                    .itemid(deactivateItemDTO.getItemid())
                     .itemcd(id.get().getItemcd())
                     .itemnm(id.get().getItemnm())
                     .originprice(id.get().getOriginprice())
                     .supplyprice(id.get().getSupplyprice())
                     .stock(id.get().getStock())
                     .unit(id.get().getUnit())
-                    .useyn(deactivateItemDTO.getUseYn())
+                    .useyn(deactivateItemDTO.getUseyn())
                     .build();
             itemRepository.save(item);
         }
@@ -258,16 +258,16 @@ public class ItemService {
      */
     @Transactional
     public ResponseResult<?> deactivateItemPrice(DeactivateItemPriceDTO deactivateItemPriceDTO) {
-        Optional<ItemPrice> id = itemPriceRepository.findById(deactivateItemPriceDTO.getItemPriceId());
+        Optional<ItemPrice> id = itemPriceRepository.findById(deactivateItemPriceDTO.getItempriceid());
         if (id.isPresent()) {
             ItemPrice itemPrice = ItemPrice.builder()
-                    .itempriceid(deactivateItemPriceDTO.getItemPriceId())
+                    .itempriceid(deactivateItemPriceDTO.getItempriceid())
                     .buyercd(id.get().getBuyercd())
                     .itemcd(id.get().getItemcd())
                     .buyersupplyprice(id.get().getBuyersupplyprice())
                     .surtax(id.get().getSurtax())
                     .salesprice(id.get().getSalesprice())
-                    .useyn(deactivateItemPriceDTO.getUseYn())
+                    .useyn(deactivateItemPriceDTO.getUseyn())
                     .build();
             itemPriceRepository.save(itemPrice);
         }
@@ -282,15 +282,15 @@ public class ItemService {
      */
     private ItemListDTO entityToDto(Item item) {
         return ItemListDTO.builder()
-                .itemId(item.getItemid())
-                .itemCd(item.getItemcd())
-                .itemNm(item.getItemnm())
-                .originPrice(item.getOriginprice())
-                .supplyPrice(item.getSupplyprice())
+                .itemid(item.getItemid())
+                .itemcd(item.getItemcd())
+                .itemnm(item.getItemnm())
+                .originprice(item.getOriginprice())
+                .supplyprice(item.getSupplyprice())
                 .unit(item.getUnit())
                 .stock(item.getStock())
-                .useYn(item.getUseyn())
-                .addDate(item.getAdddate().format(DateTimeFormatter.ofPattern("yyyy.MM.dd")))
+                .useyn(item.getUseyn())
+                .adddate(item.getAdddate().format(DateTimeFormatter.ofPattern("yyyy.MM.dd")))
                 .build();
     }
 
@@ -305,18 +305,18 @@ public class ItemService {
     private ItemPriceListDTO entityToDto(ItemPrice itemPrice, SearchItemDTO searchItem, String buyernm) {
 
         return ItemPriceListDTO.builder()
-                .itemPriceId(itemPrice.getItempriceid())
-                .buyerCd(itemPrice.getBuyercd())
-                .buyerNm(buyernm)
-                .itemCd(itemPrice.getItemcd())
-                .itemNm(searchItem.getItemNm())
-                .originPrice(searchItem.getOriginPrice())
-                .buyerSupplyPrice(itemPrice.getBuyersupplyprice())
+                .itempriceid(itemPrice.getItempriceid())
+                .buyercd(itemPrice.getBuyercd())
+                .buyernm(buyernm)
+                .itemcd(itemPrice.getItemcd())
+                .itemnm(searchItem.getItemNm())
+                .originprice(searchItem.getOriginPrice())
+                .buyersupplyprice(itemPrice.getBuyersupplyprice())
                 .surtax(itemPrice.getSurtax())
-                .salesPrice(itemPrice.getSalesprice())
+                .salesprice(itemPrice.getSalesprice())
                 .unit(searchItem.getUnit())
-                .addDate(itemPrice.getAdddate().format(DateTimeFormatter.ofPattern("yyyy.MM.dd")))
-                .useYn(itemPrice.getUseyn())
+                .adddate(itemPrice.getAdddate().format(DateTimeFormatter.ofPattern("yyyy.MM.dd")))
+                .useyn(itemPrice.getUseyn())
                 .build();
     }
 }

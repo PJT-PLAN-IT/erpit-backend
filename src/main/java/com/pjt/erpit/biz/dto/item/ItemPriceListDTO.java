@@ -9,29 +9,29 @@ import lombok.*;
 @AllArgsConstructor
 public class ItemPriceListDTO {
 
-    private Long itemPriceId;
+    private Long itempriceid;
 
-    private String buyerCd;
+    private String buyercd;
 
-    private String buyerNm;
+    private String buyernm;
 
-    private String itemCd;
+    private String itemcd;
 
-    private String itemNm;
+    private String itemnm;
 
-    private Integer originPrice;
+    private Integer originprice;
 
-    private Integer buyerSupplyPrice;
+    private Integer buyersupplyprice;
 
     private Integer surtax;
 
-    private Integer salesPrice;
+    private Integer salesprice;
 
     private String unit;
 
-    private String addDate;
+    private String adddate;
 
-    private String useYn;
+    private String useyn;
 
 
 }

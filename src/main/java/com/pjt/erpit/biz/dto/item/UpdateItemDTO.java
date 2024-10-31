@@ -12,19 +12,19 @@ import lombok.*;
 public class UpdateItemDTO {
 
     @NotNull
-    private Long itemId;
+    private Long itemid;
 
     @NotNull
-    private String itemCd;
+    private String itemcd;
 
     @NotNull
-    private String itemNm;
+    private String itemnm;
 
     @NotNull
-    private Integer originPrice;
+    private Integer originprice;
 
     @NotNull
-    private Integer supplyPrice;
+    private Integer supplyprice;
 
     @NotNull
     private String unit;
@@ -33,18 +33,18 @@ public class UpdateItemDTO {
     private Integer stock;
 
     @NotNull
-    private String useYn;
+    private String useyn;
 
     public Item toEntity(Item item1,  String ip) {
         Item item = item1.builder()
-                .itemid(itemId)
-                .itemcd(itemCd)
-                .itemnm(itemNm)
-                .originprice(originPrice)
-                .supplyprice(supplyPrice)
+                .itemid(itemid)
+                .itemcd(itemcd)
+                .itemnm(itemnm)
+                .originprice(originprice)
+                .supplyprice(supplyprice)
                 .unit(unit)
                 .stock(stock)
-                .useyn(useYn)
+                .useyn(useyn)
                 .build();
         item.setUpdipaddr(ip);
         item.setUpduser(item1.getUpduser());

@@ -11,19 +11,19 @@ import lombok.*;
 public class ItemListDTO {
 
     @NotNull
-    private Long itemId;
+    private Long itemid;
 
     @NotNull
-    private String itemCd;
+    private String itemcd;
 
     @NotNull
-    private String itemNm;
+    private String itemnm;
 
     @NotNull
-    private Integer originPrice;
+    private Integer originprice;
 
     @NotNull
-    private Integer supplyPrice;
+    private Integer supplyprice;
 
     @NotNull
     private String unit;
@@ -32,8 +32,8 @@ public class ItemListDTO {
     private Integer stock;
 
     @NotNull
-    private String useYn;
+    private String useyn;
 
     @NotNull
-    private String addDate;
+    private String adddate;
 }

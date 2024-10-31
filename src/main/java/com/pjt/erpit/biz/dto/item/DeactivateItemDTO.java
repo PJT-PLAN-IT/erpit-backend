@@ -12,8 +12,8 @@ import lombok.*;
 public class DeactivateItemDTO {
 
     @NotNull
-    private Long itemId;
+    private Long itemid;
 
     @NotNull
-    private String useYn;
+    private String useyn;
 }
