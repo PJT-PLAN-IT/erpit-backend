@@ -80,6 +80,7 @@ public class AuthService {
         loginResponse.setUsernm(user.getUsernm());
         loginResponse.setRole(role);
         loginResponse.setAccessToken(accessToken);
+        loginResponse.setIsInitPw("erpit1234".equals(password) ? "Y" : "N");
 
         return ResponseResult.ofSuccess("success", loginResponse);
     }
