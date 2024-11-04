@@ -26,5 +26,7 @@ public class LoginDTO {
         private String role;
 
         private String accessToken;
+
+        private String isInitPw;
     }
 }

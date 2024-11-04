@@ -102,7 +102,7 @@ public class JwtUtil {
         Cookie cookie = new Cookie("Refresh-Token", value);
         cookie.setMaxAge(Math.toIntExact(JwtUtil.REFRESH_TOKEN_EXPIRE)); // 24시간
 //        cookie.setSecure(true); // HTTPS 통신 시 활성화
-//        cookie.setPath("/"); // 쿠키가 적용될 범위
+        cookie.setPath("/"); // 쿠키가 적용될 범위
         cookie.setHttpOnly(true); // 클라이언트에서 JavaScript 코드를 통한 Cookie 접근 제한
         return cookie;
     }
