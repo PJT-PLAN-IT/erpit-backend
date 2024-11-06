@@ -106,6 +106,8 @@ public class ReportService {
                 .toList();
 
         Map<String, Integer> itemSalesMap = new HashMap<>();
+        Map<String, String> itemCdMap = new HashMap<>();
+
         orders.stream()
                 .filter(o -> o.getOrderdate().getMonthValue() == month)
                 .forEach(o -> {
@@ -115,6 +117,8 @@ public class ReportService {
                         String itemCd = oi.getItemcd();
                         String itemNm = itemRepository.findByItemnm(itemCd);
                         Integer itemSales = oi.getOrdersalesprice() * oi.getOrderqty();
+
+                        itemCdMap.put(itemNm, itemCd);
 
                         if (itemSalesMap.containsKey(itemNm)) {
                             itemSalesMap.put(itemNm, itemSalesMap.get(itemNm) + itemSales);
@@ -127,12 +131,13 @@ public class ReportService {
         List<ReportDTO.TopSalesDto> topSalesList = itemSalesMap.entrySet().stream()  //월별 제품매출 top5
                 .map(e -> {
                     ReportDTO.TopSalesDto dto = new ReportDTO.TopSalesDto();
+                    dto.setItemCd(itemCdMap.get(e.getKey()));
                     dto.setItemNm(e.getKey());
                     dto.setItemSales(e.getValue());
                     return dto;
                 })
                 .sorted(Comparator.comparing(ReportDTO.TopSalesDto::getItemSales).reversed())   //getItemSales 기준 내림차순
-                .limit(5)
+                .limit(7)
                 .toList();
 
         List<ReportDTO.TopUserDto> topUsersList = reportMapper.top10Users(month);  //월별 영원사원 매출 Top10

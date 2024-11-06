@@ -15,7 +15,7 @@
           AND o.status = 'APRV_CMPT'
         GROUP BY o.usercd, u.usernm
         ORDER BY userSales
-        DESC LIMIT 10
+        DESC LIMIT 7
     </select>
 
     <!-- 월별 top10Buyer -->
@@ -30,6 +30,6 @@
           AND o.status = 'APRV_CMPT'
         GROUP BY o.buyercd, b.buyernm
         ORDER BY buyerSales
-        DESC LIMIT 10
+        DESC LIMIT 7
     </select>
 </mapper>

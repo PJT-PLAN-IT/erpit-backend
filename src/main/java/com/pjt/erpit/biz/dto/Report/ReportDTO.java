@@ -33,6 +33,7 @@ public class ReportDTO {
 
     @Data
     public static class TopSalesDto {
+        private String itemCd;
         private String itemNm;
         private Integer itemSales;
     }
