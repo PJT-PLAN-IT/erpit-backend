@@ -89,11 +89,17 @@
                moi.ordersalesprice,
                mi.stock,
                mi.unit,
+               mip.buyersupplyprice AS originalSupplyPrice,
                DATE_FORMAT(moi.deliverydate,'%Y-%m-%d') AS deliverydate
         FROM M_ORDER_ITEM moi
                  INNER JOIN M_ITEM mi
                             ON moi.itemcd = mi.itemcd
-        WHERE moi.orderno = #{orderno}
+                 INNER JOIN M_ORDER mo
+                            ON moi.ORDERNO = mo.ORDERNO
+                 INNER JOIN M_ITEM_PRICE mip
+                            ON mip.BUYERCD = mo.BUYERCD
+                                AND mip.ITEMCD = mi.ITEMCD
+        WHERE moi.orderno =  #{orderno}
     </select>
 
 </mapper>

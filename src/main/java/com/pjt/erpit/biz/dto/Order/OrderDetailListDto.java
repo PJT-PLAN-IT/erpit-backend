@@ -55,8 +55,12 @@ public class OrderDetailListDto {
 
         private Integer ordersalesprice;
 
+        private Integer originalSupplyPrice;
+
         private int stock;
+
         private String unit;
+
         private String deliverydate;
 
     }

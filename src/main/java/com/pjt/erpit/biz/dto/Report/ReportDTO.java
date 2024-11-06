@@ -11,7 +11,7 @@ import java.util.List;
 @AllArgsConstructor
 public class ReportDTO {
 
-    private String revenue; //연누계
+    private Integer revenue; //연누계
 
     private Integer orderCount; //월별 총 주문건수
 
