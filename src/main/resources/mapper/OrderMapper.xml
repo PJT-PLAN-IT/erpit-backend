@@ -99,6 +99,7 @@
                  INNER JOIN M_ITEM_PRICE mip
                             ON mip.BUYERCD = mo.BUYERCD
                                 AND mip.ITEMCD = mi.ITEMCD
+                                AND mip.useyn ='Y'
         WHERE moi.orderno =  #{orderno}
     </select>
 
