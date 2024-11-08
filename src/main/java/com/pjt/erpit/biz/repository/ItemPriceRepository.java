@@ -22,7 +22,7 @@ public interface ItemPriceRepository extends JpaRepository<ItemPrice, Long> {
             "INNER JOIN M_BUYER b ON ip.buyercd  = b.buyercd " +
             "WHERE (:item IS NULL OR :item = '' OR LOWER(ip.itemcd) LIKE LOWER(CONCAT('%', :item, '%')) OR LOWER(i.itemnm) LIKE LOWER(CONCAT('%', :item, '%'))) " +
             "AND (:buyer IS NULL OR :buyer = '' OR LOWER(ip.buyercd) LIKE LOWER(CONCAT('%', :buyer, '%')) OR LOWER(b.buyernm) LIKE LOWER(CONCAT('%', :buyer, '%'))) " +
-            "AND ip.useyn = 'Y'")
+            "AND ip.useyn = 'Y' Order By ip.adddate desc")
             List<ItemPrice> searchItemPrice(@Param("item") String item, @Param("buyer") String buyer);
 
 }

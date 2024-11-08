@@ -91,7 +91,7 @@ public class BuyerService {
         List<Buyer> buyerlist;
 
         if (buyer == null || buyer.isEmpty()) {
-            buyerlist = buyerRepository.findAll();
+            buyerlist = buyerRepository.findAllByOrderByAdddateDesc();
         } else {
             buyerlist = buyerRepository.findByBuyercdOrBuyernm(buyer);
         }
