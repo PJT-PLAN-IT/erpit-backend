@@ -15,7 +15,8 @@
         FROM M_USER MU
                  INNER JOIN M_AUTH MA
                             ON MU.USERCD = MA.USERCD
-        WHERE MU.usercd like '%${user}%' OR MU.usernm like '%${user}%';
+        WHERE MU.usercd like '%${user}%' OR MU.usernm like '%${user}%'
+        ORDER BY MU.ADDDATE DESC
     </select>
 
     <select id="getAllUser" parameterType="String" resultType="com.pjt.erpit.biz.dto.user.UserListDto$Response">
@@ -29,5 +30,6 @@
         FROM M_USER MU
                  INNER JOIN M_AUTH MA
                             ON MU.USERCD = MA.USERCD
+        ORDER BY MU.ADDDATE DESC
     </select>
 </mapper>

@@ -42,7 +42,7 @@ public class ReportService {
 
         List<Order> orders = orderRepository.findByOrder(startDate, endDate, reportDTO.getUser());
 
-        String revenue = String.valueOf(
+        Integer revenue = Integer.valueOf(
                 orders.stream()    //연누계
                 .flatMap(o -> {
                     List<OrderItem> orderItems = orderItemRepository.findByOrderno(o.getOrderno());

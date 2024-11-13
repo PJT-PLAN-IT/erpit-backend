@@ -16,6 +16,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.swing.text.html.Option;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -113,6 +114,8 @@ public class ItemService {
         }
 
         String ip = request.getRemoteAddr();
+
+
         List<ItemPrice> itemPriceList = new ArrayList<>();
 
         for (CreateItemPriceDTO.Request createItemPriceDTO : createItemPriceDTOList) {
@@ -127,6 +130,16 @@ public class ItemService {
             itemPriceList.add(itemPrice);
         }
 
+        for (CreateItemPriceDTO.Request createItemPriceDTO : createItemPriceDTOList) {
+            Optional<ItemPrice> itemPrice = itemPriceRepository.findByBuyercdAndItemcdAndUseyn(createItemPriceDTO.getBuyercd(), createItemPriceDTO.getItemcd(), "Y");
+            if (itemPrice.isPresent()) {
+                ItemPrice itemPrice1 = itemPrice.get();
+                itemPrice1.setUseyn("N");
+                itemPrice1.setUpdipaddr(ip);
+                itemPriceRepository.save(itemPrice1);
+            }
+        }
+
         try {
             itemPriceRepository.saveAll(itemPriceList);
         } catch (Exception e) {
@@ -134,6 +147,8 @@ public class ItemService {
             log.debug(e.getMessage());
             return ResponseResult.ofFailure(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
         }
+
+
 
         return ResponseResult.ofSuccess("success", null);
     }
