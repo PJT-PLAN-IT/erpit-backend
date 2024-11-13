@@ -30,6 +30,8 @@ public class ReportService {
     private final ReportMapper reportMapper;
 
     public ReportDTO report(ReportSearchDTO reportDTO) {
+        String user = reportDTO.getUser();
+
         String yearString = reportDTO.getYear();
         Integer year = Integer.parseInt(yearString);
 
@@ -128,7 +130,7 @@ public class ReportService {
                     });
                 });
 
-        List<ReportDTO.TopSalesDto> topSalesList = itemSalesMap.entrySet().stream()  //월별 제품매출 top5
+        List<ReportDTO.TopSalesDto> topSalesList = itemSalesMap.entrySet().stream()  //월별 제품매출 top7
                 .map(e -> {
                     ReportDTO.TopSalesDto dto = new ReportDTO.TopSalesDto();
                     dto.setItemCd(itemCdMap.get(e.getKey()));
@@ -140,9 +142,9 @@ public class ReportService {
                 .limit(7)
                 .toList();
 
-        List<ReportDTO.TopUserDto> topUsersList = reportMapper.top10Users(month);  //월별 영원사원 매출 Top10
+        List<ReportDTO.TopUserDto> topUsersList = reportMapper.top10Users(year, month);  //월별 영원사원 매출 Top10
 
-        List<ReportDTO.TopBuyerDto> topBuyerList = reportMapper.top10Buyers(month);  //월별 바이어 매출 Top10
+        List<ReportDTO.TopBuyerDto> topBuyerList = reportMapper.top10Buyers(year, month, user);  //월별 바이어 매출 Top10
 
         return ReportDTO.builder()
                 .revenue(revenue)

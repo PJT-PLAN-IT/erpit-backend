@@ -12,7 +12,7 @@ import java.util.List;
 @Mapper
 public interface ReportMapper {
 
-    List<ReportDTO.TopUserDto> top10Users(@Param("month") int month);
+    List<ReportDTO.TopUserDto> top10Users(@Param("year") int year, @Param("month") int month);
 
-    List<ReportDTO.TopBuyerDto> top10Buyers(@Param("month") int month);
+    List<ReportDTO.TopBuyerDto> top10Buyers(@Param("year") int year, @Param("month") int month, @Param("user") String user);
 }

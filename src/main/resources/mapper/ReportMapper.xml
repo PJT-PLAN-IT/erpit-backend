@@ -12,6 +12,7 @@
                 INNER JOIN M_ORDER o ON oi.orderno = o.orderno
                 INNER JOIN M_USER u ON o.usercd = u.usercd
         WHERE MONTH(o.orderdate) = #{month}
+          AND YEAR(o.orderdate) = #{year}
           AND o.status = 'APRV_CMPT'
         GROUP BY o.usercd, u.usernm
         ORDER BY userSales
@@ -26,7 +27,10 @@
         FROM M_ORDER_ITEM oi
                  INNER JOIN M_ORDER o ON oi.orderno = o.orderno
                  INNER JOIN M_BUYER b ON o.buyercd = b.buyercd
+                 INNER JOIN M_USER u ON o.usercd = u.usercd
         WHERE MONTH(o.orderdate) = #{month}
+          AND YEAR(o.orderdate) = #{year}
+          AND (#{user} IS NULL OR #{user} = '' OR u.usercd = #{user})
           AND o.status = 'APRV_CMPT'
         GROUP BY o.buyercd, b.buyernm
         ORDER BY buyerSales
