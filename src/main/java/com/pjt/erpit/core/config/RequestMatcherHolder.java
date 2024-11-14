@@ -21,9 +21,14 @@ public class RequestMatcherHolder {
             "/api/order/**",
             "/api/report",
             "/api/report/**",
+            "/api/buyer",
             "/api/buyer/list",
+            "/api/buyer/check",
+            "/api/admin/signup",
             "/api/user/change-password",
             "/api/user/list",
+            "/api/item",
+            "/api/item/check",
             "/api/item/list",
             "/api/item/price/list"
     );
