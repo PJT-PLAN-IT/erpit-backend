@@ -294,7 +294,7 @@ public class ItemService {
                 .unit(item.getUnit())
                 .stock(item.getStock())
                 .useyn(item.getUseyn())
-                .adddate(item.getAdddate().format(DateTimeFormatter.ofPattern("yyyy.MM.dd")))
+                .adddate(item.getAdddate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")))
                 .build();
     }
 
@@ -319,7 +319,7 @@ public class ItemService {
                 .surtax(itemPrice.getSurtax())
                 .salesprice(itemPrice.getSalesprice())
                 .unit(searchItem.getUnit())
-                .adddate(itemPrice.getAdddate().format(DateTimeFormatter.ofPattern("yyyy.MM.dd")))
+                .adddate(itemPrice.getAdddate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")))
                 .useyn(itemPrice.getUseyn())
                 .stock(searchItem.getStock())
                 .build();
